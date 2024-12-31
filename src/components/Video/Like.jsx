@@ -7,7 +7,6 @@ const LikeVideo = ({ id, likes, fnc, isLiked }) => {
 
     const like = async () => {
         const response = await likeVideo(id);
-        console.log(response)
         if (response.data.success) {
             fnc();
         }
@@ -15,7 +14,7 @@ const LikeVideo = ({ id, likes, fnc, isLiked }) => {
 
     return (
         <div onClick={like} className="flex items-center gap-2 px-4 py-2 font-medium rounded-full cursor-pointer select-none bg-accent-foreground/10">
-            <ThumbsUp className={`scale-x-[-1]  transform ${isLiked ? "fill-accent-foreground" : ""}`} />|<span>{countFormat(likes)}</span>
+            <ThumbsUp className={isLiked ? "fill-accent-foreground" : ""} />{likes > 0 && <span >|<span className="ml-2">{countFormat(likes)}</span></span>}
         </div>
     )
 }

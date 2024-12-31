@@ -11,8 +11,8 @@ import {
 import { Switch } from "@/components/ui/switch"
 import { useEffect, useMemo, useState } from "react";
 import { dashboardVideos, togglePublish } from "@/api/user.api";
-import DeleteVideo from "../Video/DeleteVideo";
-import EditVideo from "../Video/EditVideo";
+import DeleteVideo from "./DeleteVideo";
+import EditVideo from "./EditVideo";
 import { NavLink } from "react-router-dom";
 
 const ManageVideosSkeleton = () => {
@@ -58,12 +58,11 @@ const ManageVideosSkeleton = () => {
 const ManageVideos = () => {
 
     const [loggedInUser, setLoggedInUser] = useState(null);
-    const [isPublished, setIsPublished] = useState(false);
 
     const switchPublish = async (id) => {
         const response = await togglePublish(id);
         if (typeof response === 'boolean') {
-            setIsPublished(response);
+            user();
         }
     }
     const user = async () => {
@@ -78,7 +77,7 @@ const ManageVideos = () => {
 
     useEffect(() => {
         user();
-    }, [isPublished]);
+    }, []);
 
     const memoizedUser = useMemo(() => loggedInUser, [loggedInUser]);
 
@@ -111,20 +110,20 @@ const ManageVideos = () => {
                                         {item.isPublished ? "Published" : "Unpublished"}
                                     </span>
                                 </TableCell>
-                                <NavLink to={`/watch/${item._id}`}>
-                                    <TableCell className="w-[42rem]">
+                                <TableCell className="min-w-[30rem]">
+                                    <NavLink to={`/watch/${item._id}`}>
                                         <div className="flex gap-3">
                                             <img src={item.thumbnail} alt="thumbnail" className="object-contain w-24 h-16" />
-                                            <span className="font-medium">
+                                            <span className="font-medium line-clamp-3 text-ellipsis">
                                                 {item.title}
                                             </span>
                                         </div>
-                                    </TableCell>
-                                </NavLink>
+                                    </NavLink>
+                                </TableCell>
                                 <TableCell className="text-center">
                                     {item.views}
                                 </TableCell>
-                                <TableCell className="text-center">
+                                <TableCell className="text-center min-w-32">
                                     {new Date(item.createdAt).toLocaleDateString()}
                                 </TableCell>
                                 <TableCell className="">

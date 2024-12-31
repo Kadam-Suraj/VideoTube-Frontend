@@ -1,4 +1,4 @@
-import { currentUser, logOutUser } from "@/api/user.api";
+import { currentUser } from "@/api/user.api";
 import { createContext, useContext, useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import { useToast } from "@/hooks/use-toast";
@@ -14,43 +14,58 @@ export const AuthProvider = ({ children }) => {
         return savedState === "true"; // Convert string to boolean
     });
 
+    const [session, setSession] = useState(true);
+
     const [loggedInUser, setLoggedInUser] = useState(null);
 
     const login = () => {
         setIsLoggedIn(true);
+        setSession(true);
         localStorage.setItem("isLoggedIn", true);
     }
     const logout = () => {
         setIsLoggedIn(false);
+        setSession(false);
         localStorage.removeItem("isLoggedIn");
     };
 
     const user = async () => {
         const response = await currentUser();
         if (response.data.success) {
-            localStorage.setItem("isLoggedIn", true);
+            login()
             setLoggedInUser(response.data.data);
         }
-        if (!response.data.success) {
-            const res = await logOutUser();
-            if (res.data.success) {
-                logout();
-                toast({
-                    variant: "destructive",
-                    title: "Session Expired",
-                    description: "Please login again",
-                });
-                return;
-            }
+        if (response.data.statusCode === 401) {
+            logout();
+            toast({
+                variant: "destructive",
+                title: "Session Expired",
+                description: "Please login again",
+            });
         }
+
+        // if (response.data.statusCode !== 200 || response.data.statusCode !== 401) {
+        //     logout();
+        //     const res = await logOutUser();
+        //     if (res.data.success) {
+        //         toast({
+        //             variant: "destructive",
+        //             title: "Session Destroyed",
+        //             description: "Please login again",
+        //         });
+        //         return;
+        //     }
+        // }
     }
 
     useEffect(() => {
-        user();
+        if (isLoggedIn) {
+            // user();
+        }
     }, []);
 
     return (
-        <AuthContext.Provider value={{ isLoggedIn, login, logout, loggedInUser }}>
+        <AuthContext.Provider value={{ isLoggedIn, user, login, logout, loggedInUser, session }}>
             {children}
         </AuthContext.Provider>
     );

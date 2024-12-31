@@ -17,16 +17,16 @@ import { NavLink } from "react-router-dom"
 import { useToast } from "@/hooks/use-toast"
 import { useNavigate } from 'react-router-dom';
 import { loginUser } from "@/api/user.api"
-import { useEffect } from "react"
+import { useEffect, useState } from "react"
 import { useAuth } from "@/context/AuthContext"
+import ShowPassword from "@/components/ShowPassword"
 
 const Login = () => {
-
+    const [showPassword, setShowPassword] = useState(false);
     const { isLoggedIn, login } = useAuth();
 
     const { toast } = useToast();
     const navigate = useNavigate();
-
 
     const formSchema = z.object({
         username: z.string().min(2, {
@@ -44,6 +44,12 @@ const Login = () => {
             password: "",
         },
     })
+
+    useEffect(() => {
+        if (isLoggedIn) {
+            navigate("/");
+        }
+    }, [isLoggedIn, navigate]);
 
     async function onSubmit(values) {
         const response = await loginUser(values);
@@ -68,11 +74,6 @@ const Login = () => {
         }
     }
 
-    useEffect(() => {
-        if (isLoggedIn) {
-            navigate("/");
-        }
-    }, [isLoggedIn, navigate]);
 
     return (
         <>
@@ -85,7 +86,7 @@ const Login = () => {
                     </div>
                     <div className="flex-1">
                         <h2 className="mb-10 text-2xl font-semibold text-center">
-                            Login
+                            Login to your account
                         </h2>
                         <Form {...form}>
                             <form onSubmit={form.handleSubmit(onSubmit)} className="mx-auto space-y-4 md:w-96">
@@ -94,7 +95,7 @@ const Login = () => {
                                     name="username"
                                     render={({ field }) => (
                                         <FormItem>
-                                            <FormLabel>Username</FormLabel>
+                                            <FormLabel>Username / Email</FormLabel>
                                             <FormControl>
                                                 <Input placeholder="Enter your username / email (must be in lowercase)" {...field} />
                                             </FormControl>
@@ -112,7 +113,7 @@ const Login = () => {
                                         <FormItem>
                                             <FormLabel>Password</FormLabel>
                                             <FormControl>
-                                                <Input placeholder="Enter your password" {...field} />
+                                                <Input type={`${showPassword ? "text" : "password"}`} placeholder="Enter your password" {...field} />
                                             </FormControl>
                                             <FormMessage />
                                         </FormItem>
@@ -121,7 +122,10 @@ const Login = () => {
                                 <div>
                                     <NavLink to={"/change-password"} className="text-blue-500">change password?</NavLink>
                                 </div>
-                                <Button type="submit">Submit</Button>
+                                <div className="flex items-center justify-between gap-2">
+                                    <ShowPassword setShowPassword={setShowPassword} showPassword={showPassword} />
+                                    <Button type="submit">Login</Button>
+                                </div>
                             </form>
                         </Form>
                     </div>

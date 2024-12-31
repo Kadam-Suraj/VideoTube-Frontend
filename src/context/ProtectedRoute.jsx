@@ -13,7 +13,7 @@ const ProtectedRoute = ({ children }) => {
         toast({
             variant: "destructive",
             title: "Unauthorized user",
-            description: `Please log in to access the ${location.pathname.replace("/", "").toUpperCase()} page.`,
+            description: `Please log in to access the ${location.pathname.replace("/", "").toUpperCase()}.`,
         })
 
         return <Navigate to="/login" />;

@@ -2,10 +2,8 @@ import { currentUser, healthCheck } from "@/api/user.api";
 import { useEffect, useMemo, useState } from "react";
 import { ProfileSkeleton } from "./Profile";
 import ProfileStats from "@/components/Profile/Profile_Stats";
-import ManageVideos from "@/components/Profile/Manage_Videos";
-
-// import Tweet from "@/Tweet/Tweet";
-// import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import ManageVideos from "@/components/Video/Manage_Videos";
+import AdminHeader from "@/components/Profile/AdminHeader";
 
 const Dashboard = () => {
 
@@ -35,17 +33,12 @@ const Dashboard = () => {
                     <HealthCheck />
                 </div>
                 {!loggedInUser ? <ProfileSkeleton /> :
-                    <div className="container grid grid-cols-1 gap-5 px-5 mx-auto my-10">
-                        <div className="relative grid grid-cols-1 gap-5 p-5 md:grid-cols-">
-                            <img src={memoizedUser.coverImage} alt="coverImage" className="object-cover object-center w-full rounded-md h-80" />
-                            <div className="flex flex-col items-start gap-5 sm:flex-row">
-                                <img src={memoizedUser.avatar} alt="avatar" className="object-cover w-40 h-40 rounded-full -bottom-20 md:w-48 md:h-48" />
-                                <div className="flex flex-col justify-center gap-2 mt-5">
-                                    <h1 className="text-3xl font-bold uppercase">{memoizedUser.fullName}</h1>
-                                    <p className="font-normal opacity-50 dark:text-gray-300 dark:opacity-80">@{memoizedUser.username}</p>
-                                    <p className="font-normal opacity-50 dark:text-gray-300 dark:opacity-80">Joined on: {new Date(memoizedUser.createdAt).toDateString()}</p>
-                                </div>
-                            </div>
+                    <div className="grid w-full grid-cols-1 gap-5 my-10">
+                        <div className="flex items-center max-[450px]:flex-col justify-between gap-5">
+                            <AdminHeader username={memoizedUser.fullName} />
+                            <span className="self-end">
+                                < UploadVideo />
+                            </span>
                         </div>
                         <span className="w-full h-[.1rem] bg-gray-300 dark:bg-gray-800" />
                         <div>
@@ -57,17 +50,6 @@ const Dashboard = () => {
                         <div>
                             <ManageVideos />
                         </div>
-                        {/* <Tabs defaultValue="videos" className="">
-                            <TabsList className="justify-around w-full">
-                                <TabsTrigger value="videos" >Videos</TabsTrigger>
-                                <TabsTrigger value="tweets">Tweets</TabsTrigger>
-                            </TabsList>
-                            <TabsContent value="videos">
-                            </TabsContent>
-                            <TabsContent value="tweets">
-                                <Tweet data={memoizedUser} />
-                            </TabsContent>
-                        </Tabs> */}
                     </div>
                 }
             </section>
@@ -81,6 +63,7 @@ export default Dashboard
 
 
 import { Hourglass } from "lucide-react";
+import UploadVideo from "@/components/Video/UploadVideo";
 
 const HealthCheck = () => {
     const [health, setHealth] = useState(null);

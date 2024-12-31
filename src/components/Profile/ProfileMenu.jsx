@@ -8,13 +8,14 @@ import {
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import { useToast } from "@/hooks/use-toast";
-import { LogOut, LayoutDashboardIcon } from "lucide-react";
+import { LogOut } from "lucide-react";
 import { NavLink, useNavigate } from "react-router-dom";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useAuth } from "@/context/AuthContext";
+import { Avatar } from "../Avatar";
 
 const ProfileMenu = () => {
-    const { logout } = useAuth();
+    const { logout, user, loggedInUser } = useAuth();
     const { toast } = useToast();
     const navigate = useNavigate();
     const [open, setOpen] = useState(false);
@@ -45,21 +46,28 @@ const ProfileMenu = () => {
         setOpen(false);
     }
 
+    useEffect(() => {
+        user();
+    }, []);
+
+
     return (
         <DropdownMenu open={open} onOpenChange={setOpen}>
             <DropdownMenuTrigger className="py-2">
-                <LayoutDashboardIcon size={30} />
+                {loggedInUser &&
+                    <Avatar url={loggedInUser?.avatar} />
+                }
             </DropdownMenuTrigger>
             <DropdownMenuContent>
-                <DropdownMenuLabel>My Account</DropdownMenuLabel>
+                <DropdownMenuLabel>Account</DropdownMenuLabel>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem>
-                    <NavLink to="/dashboard" onClick={handleProfileClick}>
+                    <NavLink to="/dashboard" onClick={handleProfileClick} className="w-full">
                         Dashboard
                     </NavLink>
                 </DropdownMenuItem>
                 <DropdownMenuItem>
-                    <NavLink to="/user-profile" onClick={handleProfileClick}>
+                    <NavLink to="/user-profile" onClick={handleProfileClick} className="w-full">
                         Profile
                     </NavLink>
                 </DropdownMenuItem>

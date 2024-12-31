@@ -26,10 +26,12 @@ const DeleteVideo = ({ fnc, id }) => {
             })
             return;
         }
-        toast({
-            variant: "destructive",
-            title: "Failed to delete video",
-        })
+        if (!response) {
+            toast({
+                variant: "destructive",
+                title: "Failed to delete video",
+            })
+        }
     }
 
     return (

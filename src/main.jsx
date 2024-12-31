@@ -10,7 +10,7 @@ import Profile from './pages/Profile'
 import { AuthProvider } from './context/AuthContext'
 import Dashboard from './pages/Dashboard'
 import Home from './pages/Home'
-import ProtectedRoute from './components/ProtectedRoute'
+import ProtectedRoute from './context/ProtectedRoute'
 import Video from './pages/Video'
 import User from './pages/User'
 

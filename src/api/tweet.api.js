@@ -1,23 +1,10 @@
-import axios from 'axios';
-import { options } from './user.api';
+import axios from "axios";
+import { options } from "./user.api";
 
-export const getVideoComments = async (id) => {
+export const addTweet = async (data) => {
+    console.log(data)
     try {
-        const response = await axios.get(`/api/v1/comments/${id}`, {
-            options
-        });
-
-        return response;
-
-    } catch (error) {
-        console.error(error);
-        return error.response
-    }
-};
-
-export const addVideoComment = async (data, id) => {
-    try {
-        const response = await axios.post(`/api/v1/comments/${id}`, data, {
+        const response = await axios.post(`/api/v1/tweets/`, data, {
             options
         });
         return response;
@@ -28,9 +15,9 @@ export const addVideoComment = async (data, id) => {
     }
 };
 
-export const editVideoComment = async (id, data) => {
+export const getTweets = async (id) => {
     try {
-        const response = await axios.patch(`/api/v1/comments/c/${id}`, data, {
+        const response = await axios.get(`/api/v1/tweets/user/${id}`, {
             options
         });
         return response;
@@ -41,9 +28,9 @@ export const editVideoComment = async (id, data) => {
     }
 };
 
-export const deleteComment = async (id) => {
+export const editTweet = async (id, data) => {
     try {
-        const response = await axios.delete(`/api/v1/comments/c/${id}`, {
+        const response = await axios.patch(`/api/v1/tweets/${id}`, data, {
             options
         });
         return response;
@@ -54,9 +41,22 @@ export const deleteComment = async (id) => {
     }
 };
 
-export const likeComment = async (id) => {
+export const likeTweet = async (id) => {
     try {
-        const response = await axios.post(`/api/v1/likes/toggle/c/${id}`, {
+        const response = await axios.post(`/api/v1/likes/toggle/t/${id}`, {
+            options
+        });
+        return response;
+
+    } catch (error) {
+        console.error(error);
+        return error.response
+    }
+};
+
+export const deleteTweet = async (id) => {
+    try {
+        const response = await axios.delete(`/api/v1/tweets/${id}`, {
             options
         });
         return response;

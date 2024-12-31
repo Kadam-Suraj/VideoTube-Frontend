@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const options = {
+export const options = {
     headers: {
         "Content-Type": "application/json",
     },
@@ -29,6 +29,51 @@ export const updateUser = async (data) => {
     }
 };
 
+export const updateUserAvatar = async (data, onProgress, signal) => {
+    try {
+        const response = await axios.patch(`/api/v1/users/update-avatar`, data, {
+            headers: {
+                "Content-Type": "multipart/form-data",
+            },
+            withCredentials: true,
+            onUploadProgress: (progressEvent) => {
+                const progress = Math.round((progressEvent.loaded * 100) / progressEvent.total);
+                if (onProgress) {
+                    onProgress(progress); // Pass progress to the callback
+                }
+            },
+            signal
+        });
+        return response;
+    } catch (error) {
+        console.error(error);
+        return error.response;
+    }
+};
+
+export const updateUserCoverImage = async (data, onProgress, signal) => {
+    console.log(data)
+    try {
+        const response = await axios.patch(`/api/v1/users/update-cover`, data, {
+            headers: {
+                "Content-Type": "multipart/form-data",
+            },
+            withCredentials: true,
+            onUploadProgress: (progressEvent) => {
+                const progress = Math.round((progressEvent.loaded * 100) / progressEvent.total);
+                if (onProgress) {
+                    onProgress(progress); // Pass progress to the callback
+                }
+            },
+            signal
+        });
+        return response;
+    } catch (error) {
+        console.error(error);
+        return error.response;
+    }
+};
+
 export const changePassword = async (data) => {
     try {
         const response = await axios.post(`/api/v1/users/change-password`, data, options);
@@ -43,6 +88,16 @@ export const changePassword = async (data) => {
 export const currentUser = async () => {
     try {
         const response = await axios.get(`/api/v1/users/current-user`, options);
+        return response;
+
+    } catch (error) {
+        return error.response
+    }
+};
+
+export const refreshSession = async () => {
+    try {
+        const response = await axios.post(`/api/v1/users/refresh-token`, options);
         return response;
 
     } catch (error) {
@@ -72,18 +127,15 @@ export const subscribeUser = async (id) => {
     }
 };
 
-export const getAllVideos = async (id) => {
+export const getPublicVideos = async () => {
     try {
         const response = await axios.get(`/api/v1/videos/`, {
-            headers: {
-                "Content-Type": "application/json",
-            },
-            withCredentials: true, // For including cookies
+            options,
             params: {
+                limit: 35,
                 page: 1,
                 sortBy: "createdAt",
                 sortType: "desc",
-                userId: id,
             },
         });
 
@@ -163,12 +215,12 @@ export const deleteVideo = async (id) => {
     }
 }
 
-// export const getAllVideos = async () => {
-//     try {
-//         const response = await axios.get(`/api/v1/healthcheck/`, options);
-//         return response;
+export const getUser = async (username) => {
+    try {
+        const response = await axios.get(`/api/v1/users/c/${username}`, options);
+        return response;
 
-//     } catch (error) {
-//         throw new error("Failed to get stats");
-//     }
-// }
+    } catch (error) {
+        return error.response
+    }
+};

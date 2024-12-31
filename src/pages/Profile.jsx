@@ -28,31 +28,20 @@ const Profile = () => {
     return (
         <>
             {!loggedInUser ? <ProfileSkeleton /> :
-                <div className="container grid grid-cols-1 gap-5 px-5 mx-auto my-10">
-                    <div className="relative grid grid-cols-1 gap-5 p-5 md:grid-cols-">
-                        <img src={memoizedUser.coverImage} alt="coverImage" className="object-cover object-center w-full rounded-md h-80" />
-                        <div className="flex flex-col items-start gap-5 sm:flex-row">
-                            <img src={memoizedUser.avatar} alt="avatar" className="object-cover w-40 h-40 rounded-full -bottom-20 md:w-48 md:h-48" />
-                            <div className="flex flex-col justify-center gap-2 mt-5">
-                                <h1 className="text-3xl font-bold">{memoizedUser.fullName}</h1>
-                                <p className="font-normal opacity-50 dark:text-gray-300 dark:opacity-80">@{memoizedUser.username}</p>
-                                <p className="font-normal opacity-50 dark:text-gray-300 dark:opacity-80">Joined on: {new Date(memoizedUser.createdAt).toDateString()}</p>
-                                {/* <EditProfile data={memoizedUser} /> */}
-                            </div>
-                        </div>
-                    </div>
+                <div className="container grid grid-cols-1 gap-5 mx-auto my-10">
+                    <ProfileBanner memoizedUser={memoizedUser} />
                     <span className="w-full h-[.1rem] bg-gray-300 dark:bg-gray-800" />
                     <div>
                         <Tabs defaultValue="personal">
-                            <TabsList className="justify-around w-full">
-                                <TabsTrigger value="personal" >
-                                    Personal Information
+                            <TabsList className="grid justify-around w-full grid-cols-3 bg-transparent">
+                                <TabsTrigger value="personal" className="rounded-none">
+                                    Personal
                                 </TabsTrigger>
-                                <TabsTrigger value="channel">
-                                    Channel Information
+                                <TabsTrigger value="channel" className="rounded-none">
+                                    Channel
                                 </TabsTrigger>
-                                <TabsTrigger value="password">
-                                    Change Password
+                                <TabsTrigger value="password" className="rounded-none">
+                                    Password
                                 </TabsTrigger>
                             </TabsList>
                             <TabsContent value="personal">
@@ -81,6 +70,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import EditPersonalInfo from "@/components/Profile/EditPersonalInfo";
 import EditChannelInfo from "@/components/Profile/EditChannelInfo";
 import ChangePassword from "@/components/Profile/ChangePassword";
+import ProfileBanner from "@/components/Profile/ProfileBanner";
 
 const ProfileSkeleton = () => {
     return (

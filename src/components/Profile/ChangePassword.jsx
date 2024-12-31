@@ -3,7 +3,6 @@ import { useForm } from "react-hook-form"
 import { z } from "zod"
 
 import { Button } from "@/components/ui/button"
-
 import { Input } from "@/components/ui/input"
 
 import {
@@ -18,6 +17,8 @@ import { Label } from "../ui/label"
 import { useToast } from "@/hooks/use-toast"
 import { changePassword, logOutUser } from "@/api/user.api"
 import { useNavigate } from "react-router-dom"
+import { useState } from "react"
+import ShowPassword from "../ShowPassword"
 
 const formSchema = z.object({
     oldPassword: z.string().min(6, {
@@ -37,6 +38,8 @@ const formSchema = z.object({
 });
 
 const ChangePassword = () => {
+    const [showPassword, setShowPassword] = useState(false);
+
     const navigate = useNavigate();
 
     const { toast } = useToast();
@@ -108,7 +111,7 @@ const ChangePassword = () => {
                                     <FormItem>
                                         <FormLabel>Current password</FormLabel>
                                         <FormControl>
-                                            <Input type="password" placeholder="Enter current password" {...field} />
+                                            <Input type={showPassword ? "text" : "password"} placeholder="Enter current password" {...field} />
                                         </FormControl>
                                         <FormMessage />
                                     </FormItem>
@@ -121,7 +124,7 @@ const ChangePassword = () => {
                                     <FormItem>
                                         <FormLabel>New password</FormLabel>
                                         <FormControl>
-                                            <Input type="password" placeholder="Enter new password" {...field} />
+                                            <Input type={showPassword ? "text" : "password"} placeholder="Enter new password" {...field} />
                                         </FormControl>
                                         <FormMessage />
                                     </FormItem>
@@ -134,13 +137,16 @@ const ChangePassword = () => {
                                     <FormItem>
                                         <FormLabel>Confirm password</FormLabel>
                                         <FormControl>
-                                            <Input type="password" placeholder="Confirm your password" {...field} />
+                                            <Input type={showPassword ? "text" : "password"} placeholder="Confirm your password" {...field} />
                                         </FormControl>
                                         <FormMessage />
                                     </FormItem>
                                 )}
                             />
-                            <Button type="submit">Save changes</Button>
+                            <div className="flex max-[340px]:flex-col justify-between gap-5">
+                                <ShowPassword setShowPassword={setShowPassword} showPassword={showPassword} />
+                                <Button type="submit">Save changes</Button>
+                            </div>
                         </form>
                     </Form>
                 </div>

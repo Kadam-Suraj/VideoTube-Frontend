@@ -6,16 +6,30 @@ export const options = {
     },
     withCredentials: true, // This will send cookies with the request and allow the server to set cookies
 }
+export const registerUser = async (data) => {
+    try {
+        const response = await axios.post(`/api/v1/users/register`, data, {
+            headers: {
+                "Content-Type": "multipart/form-data",
+            },
+            withCredentials: true,
+        });
+        return response.data;
+    } catch (error) {
+        return error.response.data;
+    }
+};
+
 export const loginUser = async (data) => {
     try {
         const response = await axios.post(`/api/v1/users/login`, data, options);
         if (response.status !== 200) {
             throw new Error("Login failed");
         }
-
         return response.data;
+
     } catch (error) {
-        console.error(error);
+        console.log(error);
         return error.response.data;
     }
 };

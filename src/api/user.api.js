@@ -8,7 +8,12 @@ export const options = {
 }
 export const registerUser = async (data) => {
     try {
-        const response = await axios.post(`/api/v1/users/register`, data, options);
+        const response = await axios.post(`/api/v1/users/register`, data, {
+            headers: {
+                "Content-Type": "multipart/form-data",
+            },
+            withCredentials: true,
+        });
         return response.data;
     } catch (error) {
         return error.response.data;

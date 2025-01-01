@@ -1,1 +1,1 @@
-// export const BACKEND_URI = "http://localhost:8000/api/v1";
+export const BACKEND_URI = import.meta.env.VITE_BACKEND_URI;

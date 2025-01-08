@@ -5,7 +5,7 @@ import DeleteContent from "./DeleteContent"
 import { useState } from "react"
 import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover"
 
-const ContentActions = ({ className, data, fnc, state, setState, api, type }) => {
+const ContentActions = ({ className, data, fnc, state, setState, api, type, videoOwner, user }) => {
     const [open, setOpen] = useState(false);
 
     return (
@@ -17,7 +17,7 @@ const ContentActions = ({ className, data, fnc, state, setState, api, type }) =>
                 <PopoverContent className="max-w-40">
                     <DeleteContent type={type} api={api} fnc={fnc} id={data._id} open={setOpen} />
                     {
-                        !state &&
+                        (data.owner.username === user) && !state &&
                         <span>
                             <DropdownMenuSeparator />
                             <button onClick={() => { setOpen(false); setState(true); }} className="w-full cursor-pointer text-start">Edit</button>

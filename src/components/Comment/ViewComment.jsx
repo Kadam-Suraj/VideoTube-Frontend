@@ -37,7 +37,7 @@ const ViewComment = ({ item, fnc, videoOwner }) => {
                             </div>
                             {
                                 (item.owner.username === loggedInUser.username || loggedInUser.username === videoOwner) &&
-                                <ContentActions api={deleteComment} type="comment" state={isEditing} setState={setIsEditing} fnc={fnc} data={item} />
+                                <ContentActions api={deleteComment} type="comment" state={isEditing} setState={setIsEditing} videoOwner={videoOwner} user={loggedInUser.username} fnc={fnc} data={item} />
                             }
                         </div>
                         {

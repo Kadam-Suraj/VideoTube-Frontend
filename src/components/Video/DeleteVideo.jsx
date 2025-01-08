@@ -11,9 +11,11 @@ import {
 
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
 import { Button } from "../ui/button";
+import { useState } from "react";
 
 
 const DeleteVideo = ({ fnc, id }) => {
+    const [open, setOpen] = useState(false);
     const { toast } = useToast();
 
     async function onSubmit() {
@@ -22,26 +24,26 @@ const DeleteVideo = ({ fnc, id }) => {
             fnc();
             toast({
                 variant: "success",
-                title: "Video deleted successfully",
+                title: response.message || "Video deleted successfully",
             })
-            return;
         }
-        if (!response) {
+        if (!response.success) {
             toast({
                 variant: "destructive",
-                title: "Failed to delete video",
+                title: response.message || "Failed to delete video",
             })
         }
+        setOpen(false);
     }
 
     return (
         <>
-            <Popover>
+            <Popover open={open} onOpenChange={(open) => setOpen(open)}>
                 <PopoverTrigger>
                     <Trash2 />
                 </PopoverTrigger>
-                <PopoverContent className="flex items-center gap-2 px-2 py-0 w-fit">
-                    <Alert className="space-x-2 border-none w-96">
+                <PopoverContent className="flex gap-2 items-center px-2 py-0 w-fit">
+                    <Alert className="space-x-2 w-96 border-none">
                         <AlertTriangle />
                         <AlertTitle>Are you absolutely sure?</AlertTitle>
                         <AlertDescription className="text-accent-foreground/80">

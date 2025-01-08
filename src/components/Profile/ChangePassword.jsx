@@ -83,7 +83,7 @@ const ChangePassword = () => {
                             navigate("/login");
                         }, 300);
                     }
-                }, 1000);
+                }, 500);
                 return;
             }
             toast({

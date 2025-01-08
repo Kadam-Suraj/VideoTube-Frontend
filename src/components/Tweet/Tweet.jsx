@@ -18,9 +18,7 @@ const Tweet = ({ id }) => {
         if (response.data.success) {
             setTweets(response.data.data);
         }
-        setTimeout(() => {
-            setIsLoading(false);
-        }, 300)
+        setIsLoading(false);
     }
     useEffect(() => {
         fetchTweets();

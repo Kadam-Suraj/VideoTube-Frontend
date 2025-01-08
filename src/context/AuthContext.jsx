@@ -11,7 +11,7 @@ export const AuthProvider = ({ children }) => {
 
     const [isLoggedIn, setIsLoggedIn] = useState(() => {
         const savedState = localStorage.getItem("isLoggedIn");
-        return savedState === "true"; // Convert string to boolean
+        return Boolean(savedState); // Convert string to boolean
     });
 
     const [session, setSession] = useState(true);
@@ -43,24 +43,11 @@ export const AuthProvider = ({ children }) => {
                 description: "Please login again",
             });
         }
-
-        // if (response.data.statusCode !== 200 || response.data.statusCode !== 401) {
-        //     logout();
-        //     const res = await logOutUser();
-        //     if (res.data.success) {
-        //         toast({
-        //             variant: "destructive",
-        //             title: "Session Destroyed",
-        //             description: "Please login again",
-        //         });
-        //         return;
-        //     }
-        // }
     }
 
     useEffect(() => {
         if (isLoggedIn) {
-            // user();
+            user();
         }
     }, []);
 

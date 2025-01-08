@@ -5,7 +5,7 @@ import { VideoCard } from "./VideoCard";
 import NoContent from "../Content/NoContent";
 import Loading from "../Loading";
 
-const PanelVideos = ({ id }) => {
+const PanelVideos = ({ id, className }) => {
     const [isLoading, setIsLoading] = useState(true);
     const [videos, setVideos] = useState(null);
 
@@ -16,9 +16,7 @@ const PanelVideos = ({ id }) => {
         if (response.data.success) {
             setVideos(response.data.data);
         }
-        setTimeout(() => {
-            setIsLoading(false);
-        }, 300)
+        setIsLoading(false);
     }
 
     useEffect(() => {
@@ -30,7 +28,7 @@ const PanelVideos = ({ id }) => {
 
 
     return (
-        <div className="flex flex-col items-center justify-end min-h-[50%]">
+        <div className={`${className} flex flex-col items-center min-h-[50%]`}>
             {
                 isLoading ?
                     <div className="mt-10">
@@ -38,7 +36,7 @@ const PanelVideos = ({ id }) => {
                     </div>
                     :
                     videos && videos?.docs.length > 0 ?
-                        <div className="grid space-y-2 ">
+                        <div className="grid space-y-2">
                             {videos.docs.map((item, key) =>
                                 < VideoCard key={key} item={item} type="panel" />
                             )

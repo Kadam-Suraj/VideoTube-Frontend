@@ -20,9 +20,7 @@ const UserVideos = ({ userId }) => {
             if (response.data.success) {
                 setVideos(response.data.data);
             }
-            setTimeout(() => {
-                setIsLoading(false);
-            }, 300)
+            setIsLoading(false);
         }
         user();
 
@@ -33,13 +31,13 @@ const UserVideos = ({ userId }) => {
     }, [userId]);
 
     return (
-        <div className="grid items-center justify-center w-full m-auto">
+        <div className="grid justify-center items-center m-auto w-full">
             {
                 isLoading ? <Loading /> :
                     videos && videos?.docs.length > 0 ?
                         <VideoCardLayout videos={videos} />
                         :
-                        <div className="flex flex-col items-center gap-5">
+                        <div className="flex flex-col gap-5 items-center">
                             <NoContent type="video">
                                 <FileVideo2 size={40} />
                             </NoContent >

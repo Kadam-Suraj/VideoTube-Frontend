@@ -2,7 +2,7 @@ import { subscribeUser } from "@/api/user.api";
 import { Button } from "../ui/button";
 import PropTypes from "prop-types";
 import { useAuth } from "@/context/AuthContext";
-const Subscribe = ({ fnc, owner }) => {
+const Subscribe = ({ fnc, owner, className }) => {
 
     const { loggedInUser } = useAuth();
 
@@ -15,7 +15,7 @@ const Subscribe = ({ fnc, owner }) => {
 
     return (
         <>
-            <div className="text-sm">
+            <div className={`text-sm min-w-32 ${className}`}>
                 {
                     loggedInUser?.username !== owner?.username ?
                         < Button variant="sub" onClick={() => handleSubscribe(owner._id)}

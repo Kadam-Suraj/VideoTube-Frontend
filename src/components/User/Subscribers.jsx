@@ -15,9 +15,7 @@ const SubscribedTo = ({ id }) => {
         if (response.data.success) {
             setSubscriptions(response.data.data);
         }
-        setTimeout(() => {
-            setIsLoading(false);
-        }, 300);
+        setIsLoading(false);
     }
 
     useEffect(() => {
@@ -38,7 +36,7 @@ const SubscribedTo = ({ id }) => {
                     </div>
                     :
                     subscriptions && subscriptions.length > 0 ?
-                        <div className="w-full space-y-10">
+                        <div className="space-y-10 w-full">
                             {
                                 subscriptions.map((item, key) => (
                                     <div key={key}>

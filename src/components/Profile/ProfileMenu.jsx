@@ -26,13 +26,12 @@ const ProfileMenu = () => {
         if (res.data.success) {
             logout();
             toast({
-                variant: "success",
                 title: "Logged out successfully",
                 description: "You will be redirected to the login page",
             })
             setTimeout(() => {
-                navigate("/login");
-            }, 300);
+                navigate("/");
+            }, 100);
         } else {
             toast({
                 variant: "destructive",

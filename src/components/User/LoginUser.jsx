@@ -48,9 +48,9 @@ const LoginUser = ({ state }) => {
     })
 
     useEffect(() => {
-        if (isLoggedIn) {
-            navigate("/");
-        }
+        // if (isLoggedIn) {
+        //     navigate(-1);
+        // }
     }, [isLoggedIn, navigate]);
 
     async function onSubmit(values) {
@@ -63,7 +63,7 @@ const LoginUser = ({ state }) => {
                 title: `Welcome back ${response.data.user.fullName}`,
             })
             setTimeout(() => {
-                navigate(-1);
+                navigate('/');
             }, 500);
             return;
         }
@@ -114,11 +114,11 @@ const LoginUser = ({ state }) => {
                                     </FormItem>
                                 )}
                             />
-                            <div className="flex flex-col justify-between gap-2">
+                            <div className="flex flex-col gap-2 justify-between">
                                 <NavLink to={"/change-password"} className="text-blue-500">Change password ?</NavLink>
                                 <span onClick={() => state(false)} className="text-blue-500 cursor-pointer">{"Don't have an account ?"}</span>
                             </div>
-                            <div className="flex items-center justify-between gap-2">
+                            <div className="flex gap-2 justify-between items-center">
                                 <ShowPassword setShowPassword={setShowPassword} showPassword={showPassword} />
                                 <Button type="submit">Login</Button>
                             </div>

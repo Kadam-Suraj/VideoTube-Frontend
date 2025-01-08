@@ -5,7 +5,7 @@ import PropTypes from "prop-types";
 
 const UserInfo = ({ channel }) => {
     return (
-        <NavLink to={`/@${channel?.username}`} className="flex flex-wrap items-center gap-3">
+        <NavLink to={`/user/@${channel?.username}`} className="flex flex-wrap gap-3 items-center">
             <Avatar size="lg" url={channel?.avatar} />
             <div className="flex flex-col">
                 <span className="font-medium">{channel?.fullName}</span>

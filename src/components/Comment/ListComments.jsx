@@ -16,9 +16,7 @@ const ListComments = ({ id, videoOwner }) => {
         const response = await getVideoComments(id);
         if (response.data.success) {
             setComments(response.data.data);
-            setTimeout(() => {
-                setIsLoading(false);
-            }, 500)
+            setIsLoading(false);
         }
     }
     useEffect(() => {
@@ -27,10 +25,10 @@ const ListComments = ({ id, videoOwner }) => {
 
     return (
         <>
-            <section className="flex items-center justify-center">
+            <section className="flex justify-center items-center">
                 {
                     isLoading ? <Loading /> :
-                        <div className="grid w-full gap-4">
+                        <div className="grid gap-4 w-full">
                             {comments.docs.length > 0 && <span className="font-medium">
                                 {comments.docs.length} {comments.docs.length === 1 ? "Comment" : "Comments"}
                             </span>}

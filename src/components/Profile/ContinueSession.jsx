@@ -26,7 +26,7 @@ const ContinueSession = () => {
                     title: "Session Refreshed",
                     description: "You are now logged in",
                 });
-            }, 2000);
+            }, 200);
         }
     }
 

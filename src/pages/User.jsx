@@ -1,6 +1,6 @@
 import { getUser } from "@/api/user.api";
 import Loading from "@/components/Loading";
-import PlayList from "@/components/PlayList/PlayList";
+import { PlayList } from "@/components/PlayList/PlayList";
 import ProfileBanner from "@/components/Profile/ProfileBanner";
 import Tweet from "@/components/Tweet/Tweet";
 import { MenubarSeparator } from "@/components/ui/menubar";
@@ -39,7 +39,7 @@ const User = () => {
                     <ProfileBanner fnc={fetchUser} stats={true} memoizedUser={user} />
                     <div>
                         <Tabs defaultValue="video">
-                            <TabsList className="grid justify-around w-full grid-cols-4 bg-transparent">
+                            <TabsList className="grid grid-cols-4 justify-around w-full bg-transparent">
                                 <TabsTrigger value="video" className="rounded-none">
                                     Videos
                                 </TabsTrigger>
@@ -59,7 +59,7 @@ const User = () => {
                                     <UserVideos userId={user._id} />
                                 </TabsContent>
                                 <TabsContent value="playlist">
-                                    <PlayList />
+                                    <PlayList user={user} />
                                 </TabsContent>
                                 <TabsContent value="tweet">
                                     <Tweet id={user._id} />
@@ -71,7 +71,6 @@ const User = () => {
                         </Tabs>
                     </div>
                 </section>
-
             }
         </div>
     )

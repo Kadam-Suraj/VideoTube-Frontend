@@ -15,6 +15,23 @@ export const getVideoById = async (id) => {
     }
 };
 
+export const getSearchResults = async (query) => {
+    try {
+        const response = await axios.get(`/api/v1/videos/search/`, {
+            options,
+            params: {
+                query: query
+            }
+        });
+
+        return response;
+
+    } catch (error) {
+        console.error(error);
+        return error.response
+    }
+};
+
 export const getPanelVideos = async (id) => {
     try {
         const response = await axios.get(`/api/v1/videos/r/${id}`, {

@@ -17,9 +17,7 @@ const ShowVideos = () => {
             if (response.data.success) {
                 setVideos(response.data.data);
             }
-            setTimeout(() => {
-                setIsLoading(false);
-            }, 300)
+            setIsLoading(false);
         }
         user();
     }, []);

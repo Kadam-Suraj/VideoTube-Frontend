@@ -8,6 +8,7 @@ dotenv.config()
 export default defineConfig({
   plugins: [react()],
   server: {
+    historyApiFallback: true,
     proxy: {
       '/api': {
         target: process.env.VITE_BACKEND_URI,

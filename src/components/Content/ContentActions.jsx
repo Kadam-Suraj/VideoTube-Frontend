@@ -1,43 +1,42 @@
 import PropTypes from "prop-types"
-import {
-    Menubar,
-    MenubarContent,
-    MenubarMenu,
-    MenubarTrigger,
-} from "@/components/ui/menubar"
 import { EllipsisVertical } from "lucide-react"
-// import DeleteComment from "../Comment/DeleteComment"
 import { DropdownMenuSeparator } from "../ui/dropdown-menu"
 import DeleteContent from "./DeleteContent"
+import { useState } from "react"
+import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover"
 
-const ContentActions = ({ className, data, fnc, state, api, type }) => {
+const ContentActions = ({ className, data, fnc, state, setState, api, type }) => {
+    const [open, setOpen] = useState(false);
 
     return (
         <div className={className}>
-            <Menubar className="bg-transparent border-none">
-                <MenubarMenu >
-                    <MenubarTrigger className="data-[state=open]:bg-transparent focus:bg-transparent">
-                        <EllipsisVertical className="cursor-pointer" size={20} />
-                    </MenubarTrigger>
-                    <MenubarContent className="gap-3 p-3 border-none" >
-                        <DeleteContent type={type} api={api} fnc={fnc} id={data._id} />
-                        <DropdownMenuSeparator />
-                        <button onClick={() => state(true)} className="w-full cursor-pointer text-start">Edit</button>
-                    </MenubarContent>
-                </MenubarMenu>
-            </Menubar>
+            <Popover open={open} onOpenChange={(open) => setOpen(open)}>
+                <PopoverTrigger>
+                    <EllipsisVertical className="cursor-pointer" size={20} />
+                </PopoverTrigger>
+                <PopoverContent className="max-w-40">
+                    <DeleteContent type={type} api={api} fnc={fnc} id={data._id} open={setOpen} />
+                    {
+                        !state &&
+                        <span>
+                            <DropdownMenuSeparator />
+                            <button onClick={() => { setOpen(false); setState(true); }} className="w-full cursor-pointer text-start">Edit</button>
+                        </span>
+                    }
+                </PopoverContent>
+            </Popover>
         </div>
     )
 }
 
 ContentActions.propTypes = {
     data: PropTypes.shape({
-        username: PropTypes.string,
         _id: PropTypes.string,
     }),
     className: PropTypes.string,
     fnc: PropTypes.func,
-    state: PropTypes.func,
+    state: PropTypes.bool,
+    setState: PropTypes.func,
     api: PropTypes.func,
     type: PropTypes.string
 }

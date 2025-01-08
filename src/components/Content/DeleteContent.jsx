@@ -7,15 +7,16 @@ import { useToast } from "@/hooks/use-toast"
 import PropTypes from "prop-types"
 import { useState } from "react"
 
-const DeleteContent = ({ id, fnc, api, type }) => {
+const DeleteContent = ({ id, fnc, api, type, open }) => {
     const [isPopoverOpen, setIsPopoverOpen] = useState(false);
 
     const { toast } = useToast();
 
     async function handleDelete() {
-        setIsPopoverOpen(false);
         const response = await api(id);
         if (response.data.success) {
+            setIsPopoverOpen(false);
+            open(false);
             toast({
                 variant: "success",
                 title: `${type[0].toUpperCase() + type.slice(1)} deleted successfully`,
@@ -34,13 +35,13 @@ const DeleteContent = ({ id, fnc, api, type }) => {
     }
 
     return (
-        <div>
+        <div >
             <Popover open={isPopoverOpen} onOpenChange={setIsPopoverOpen}>
                 <PopoverTrigger className="w-full text-left">
                     Delete
                 </PopoverTrigger>
-                <PopoverContent className="flex items-center gap-2 px-2 py-0 w-fit">
-                    <Alert className="space-x-2 border-none w-96">
+                <PopoverContent className="flex gap-2 items-center px-2 py-0 w-fit">
+                    <Alert className="space-x-2 w-96 border-none">
                         <AlertTriangle />
                         <AlertTitle>Confirm deletion</AlertTitle>
                         <AlertDescription className="text-accent-foreground/80">
@@ -61,7 +62,8 @@ DeleteContent.propTypes = {
     id: PropTypes.string,
     fnc: PropTypes.func,
     api: PropTypes.func,
-    type: PropTypes.string
+    type: PropTypes.string,
+    open: PropTypes.func
 }
 
 export default DeleteContent

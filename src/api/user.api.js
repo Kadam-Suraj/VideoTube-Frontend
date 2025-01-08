@@ -225,7 +225,7 @@ export const deleteVideo = async (id) => {
         return response.data;
 
     } catch (error) {
-        throw new error("Failed to get stats");
+        return error.response.data
     }
 }
 
@@ -238,3 +238,14 @@ export const getUser = async (username) => {
         return error.response
     }
 };
+
+export const checkId = async (id) => {
+    try {
+        const response = await axios.get(`/api/v1/users/checkId/${id}`, options);
+        return response?.data;
+
+    } catch (error) {
+        return error.response?.data
+    }
+};
+

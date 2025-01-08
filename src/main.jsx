@@ -13,27 +13,33 @@ import Home from './pages/Home'
 import ProtectedRoute from './context/ProtectedRoute'
 import Video from './pages/Video'
 import User from './pages/User'
+import SearchResults from './pages/SearchResults'
+import Error from './pages/Error'
 
 const router = createBrowserRouter(
   createRoutesFromElements(
     <Route path="/" element={<Layout />}>
-      <Route path='' element={<Home />} />
-      <Route path='/login' element={<Login />} />
-      <Route path='/watch/:videoId' element={<Video />} />
-      <Route path='/:username' element={<User />} />
-
+      {/* Unprotected Routes */}
+      <Route index element={<Home />} />
+      <Route path="/user/:username" element={<User />} />
+      <Route path="/login" element={<Login />} />
+      <Route path="/watch" element={<Video />} />
+      <Route path="/results" element={<SearchResults />} />
 
       {/* Protected Routes */}
-      <Route path='/user-profile' element={
+      <Route path="/user-profile" element={
         <ProtectedRoute>
           <Profile />
         </ProtectedRoute>
       } />
-      <Route path='/dashboard' element={
+      <Route path="/dashboard" element={
         <ProtectedRoute>
           <Dashboard />
         </ProtectedRoute>
       } />
+
+      {/* Catch-All Route */}
+      <Route path="*" element={<Error />} />
     </Route>
   )
 )

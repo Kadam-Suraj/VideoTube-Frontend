@@ -191,11 +191,12 @@ export const getStats = async () => {
 
 export const healthCheck = async () => {
     try {
-        const response = await axios.get(`/api/v1/healthcheck/`, options);
+        const response = await axios.get(`/api/v1/healthCheck/`, options);
         return response;
 
     } catch (error) {
-        throw new error("Failed to get stats");
+        console.error(error);
+        return error.response
     }
 }
 

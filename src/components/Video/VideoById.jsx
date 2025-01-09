@@ -11,6 +11,7 @@ import { FileVideo2 } from "lucide-react";
 import Subscribe from "../User/Subscribe";
 import UserInfo from "../User/UserInfo";
 import AddToPlaylist from "../PlayList/AddToPlaylist";
+import VideoPlayer from "./VideoPlayer";
 
 const VideoById = ({ id, className }) => {
 
@@ -48,30 +49,28 @@ const VideoById = ({ id, className }) => {
             <div className={className}>
                 {
                     isLoading ?
-                        <div className="justify-self-center self-center">
+                        <div className="self-center justify-self-center">
                             <Loading />
                         </div> : video ?
                             <div className="flex-auto gap-4 space-y-5">
-                                <video src={video.videoFile} controls className="object-center rounded-md aspect-video" >
-                                    Your browser does not support the video tag.
-                                </video>
+                                <VideoPlayer video={video} />
                                 <h2 className="text-xl font-medium text-wrap text-ellipsis line-clamp-4">{video.title}</h2>
-                                <div className="flex justify-between items-center mt-2">
-                                    <span className="flex flex-wrap gap-3 items-center space-y-4 w-full">
+                                <div className="flex items-center justify-between mt-2">
+                                    <span className="flex flex-wrap items-center w-full gap-3 space-y-4">
                                         <UserInfo channel={video?.owner} />
                                         <Subscribe fnc={user} owner={video?.owner} />
-                                        <div className="flex flex-1 justify-between items-center space-x-5">
+                                        <div className="flex items-center justify-between flex-1 space-x-5">
                                             <LikeVideo id={video._id} likes={video.totalLikes} fnc={user} isLiked={video.isLiked} />
                                             <AddToPlaylist videoId={video._id} />
                                         </div>
                                     </span>
                                 </div>
-                                <div className="relative px-3 py-2 font-medium rounded-xl transition-all duration-700 bg-accent-foreground/10">
+                                <div className="relative px-3 py-2 font-medium transition-all duration-700 rounded-xl bg-accent-foreground/10">
                                     <div className="space-x-5">
                                         <span>{countFormat(video.views)} views</span>
                                         <span>{isOpen ? getVideDate(video.createdAt) : timeAgo(video.createdAt)}</span>
                                     </div>
-                                    <p className={`overflow-hidden mb-2 font-normal text-accent-foreground/90 ${isOpen ? "":"line-clamp-2"}`}>
+                                    <p className={`overflow-hidden mb-2 font-normal text-accent-foreground/90 ${isOpen ? "" : "line-clamp-2"}`}>
                                         {video.description}
                                     </p>
                                     {

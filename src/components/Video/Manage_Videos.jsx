@@ -101,34 +101,34 @@ const ManageVideos = () => {
                         {memoizedUser.map((item, key) => (
                             <TableRow className="" key={key}>
                                 <TableCell>
-                                    <span onClick={() => switchPublish(item._id)}>
-                                        <Switch checked={item.isPublished} />
+                                    <span onClick={() => switchPublish(item?._id)}>
+                                        <Switch checked={item?.isPublished} />
                                     </span>
                                 </TableCell>
                                 <TableCell className={`text-center w-36`}>
-                                    <span className={`border ${item.isPublished ? "border-green-500" : "border-red-500"} py-2 px-4 rounded-full`}>
-                                        {item.isPublished ? "Published" : "Unpublished"}
+                                    <span className={`border ${item?.isPublished ? "border-green-500" : "border-red-500"} py-2 px-4 rounded-full`}>
+                                        {item?.isPublished ? "Published" : "Unpublished"}
                                     </span>
                                 </TableCell>
                                 <TableCell className="min-w-[30rem]">
-                                    <NavLink to={`/watch/${item._id}`}>
+                                    <NavLink to={`/watch?v=${item?._id}`}>
                                         <div className="flex gap-3">
-                                            <img src={item.thumbnail} alt="thumbnail" className="object-contain w-24 h-16" />
+                                            <img src={item?.thumbnail} alt="thumbnail" className="object-contain w-24 h-16" />
                                             <span className="font-medium line-clamp-3 text-ellipsis">
-                                                {item.title}
+                                                {item?.title}
                                             </span>
                                         </div>
                                     </NavLink>
                                 </TableCell>
                                 <TableCell className="text-center">
-                                    {item.views}
+                                    {item?.views}
                                 </TableCell>
                                 <TableCell className="text-center min-w-32">
-                                    {new Date(item.createdAt).toLocaleDateString()}
+                                    {new Date(item?.createdAt).toLocaleDateString()}
                                 </TableCell>
                                 <TableCell className="">
                                     <div className="flex items-center justify-center gap-8">
-                                        <DeleteVideo fnc={user} id={item._id} />
+                                        <DeleteVideo fnc={user} id={item?._id} />
                                         <EditVideo data={item} fnc={user} />
                                     </div>
                                 </TableCell>

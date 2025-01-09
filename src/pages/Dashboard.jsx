@@ -1,4 +1,4 @@
-import { currentUser, healthCheck } from "@/api/user.api";
+import { currentUser } from "@/api/user.api";
 import { useEffect, useMemo, useState } from "react";
 import { ProfileSkeleton } from "./Profile";
 import ProfileStats from "@/components/Profile/Profile_Stats";
@@ -30,12 +30,12 @@ const Dashboard = () => {
     const memoizedUser = useMemo(() => loggedInUser, [loggedInUser]);
     return (
         <>
-            <section className="flex relative flex-col items-center">
+            <section className="relative flex flex-col items-center">
                 <div className="self-end">
                     <HealthCheck />
                 </div>
                 {!loggedInUser ? <ProfileSkeleton /> :
-                    <div className="grid grid-cols-1 gap-5 my-10 w-full">
+                    <div className="grid w-full grid-cols-1 gap-5 my-10">
                         <div className="flex items-center max-[450px]:flex-col justify-between gap-5">
                             <AdminHeader username={memoizedUser.fullName} />
                             <span className="self-end">

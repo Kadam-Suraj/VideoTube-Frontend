@@ -16,7 +16,6 @@ const HealthCheck = () => {
         const checkHealth = async () => {
             refreshLoading();
             const response = await healthCheck();
-            console.log(response)
             setHealth(response.data);
         };
 

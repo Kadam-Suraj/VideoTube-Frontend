@@ -48,7 +48,7 @@ const Error = ({ code = 404, data }) => {
     }
 
     return (
-        <div className='flex flex-col items-center justify-center p-5 space-y-5 md:flex-row sm:space-x-10'>
+        <div className='flex flex-col items-center justify-center p-5 sm:h-[calc(100vh-6.5rem)] h-[calc(100vh-10.5rem)] md:flex-row sm:space-x-10'>
             <img src={`/404.svg`} className="w-4/5 min-w-72 sm:min-w-96 md:w-2/5" alt="NotFound" />
             <div className="flex flex-col items-center justify-center space-y-5">
                 <h1 className="text-5xl font-bold md:text-7xl" aria-label={`Error Code: ${code}`}>{data?.title || error.title}</h1>

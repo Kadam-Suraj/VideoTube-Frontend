@@ -24,7 +24,7 @@ const ShowVideos = () => {
     return (
         <>
             <section className="">
-                <div className="flex items-center justify-center gap-4 min-h-[30rem] ">
+                <div className="flex items-center justify-center gap-4">
                     {isLoading ?
                         <Loading />
                         :

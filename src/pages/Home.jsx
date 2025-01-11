@@ -4,7 +4,7 @@ const Home = () => {
 
     return (
         <>
-            <section className="min-h-screen">
+            <section className="">
                 <div>
                     < ShowVideos />
                 </div>

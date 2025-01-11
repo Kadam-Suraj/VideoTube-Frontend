@@ -8,14 +8,14 @@ const Layout = () => {
 
     return (
         <>
-            <section className="relative h-screen mx-auto overflow-x-hidden overflow-y-scroll max-w-screen-2xl">
+            <section className="mx-auto overflow-x-hidden overflow-y-scroll max-h-svh max-w-screen-2xl">
                 <Header />
                 <div className="absolute left-0 right-0 border-b top-16" />
-                <div className="flex relative sm:max-h-[calc(100vh-4rem)] max-h-[calc(100vh-8rem)] overflow-y-scroll">
-                    <div className="relative left-0 hidden sm:block">
+                <div className="flex">
+                    <div className="hidden sm:block">
                         <SideBar />
                     </div>
-                    <div className="w-full px-2 py-5 overflow-y-scroll">
+                    <div className="w-full sm:h-[calc(100vh-4rem)] h-[calc(100vh-8rem)] p-2 overflow-y-scroll">
                         <Outlet />
                     </div>
                 </div>

@@ -9,7 +9,7 @@ import VideoActions from "./VideoActions";
 
 const VideoCardLayout = ({ videos }) => {
     return (
-        <div className="grid gap-4 w-full sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+        <div className="grid w-full gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
             {
                 videos?.docs.map((item, key) => (
                     <VideoCard item={item} key={key} />
@@ -25,7 +25,7 @@ VideoCardLayout.propTypes = {
 
 const VideoCard = ({ item, type }) => {
     return (
-        <Card className="mx-auto transition-all duration-300 shrink hover:scale-[1.03] hover:shadow-lg p-0 border-none">
+        <Card className="mx-auto transition-all duration-300 shrink sm:hover:scale-[1.03] hover:shadow-lg p-0 border-none">
             <div className={`flex justify-between gap-1 rounded-md cursor-pointer max-[363px]:flex-col min-h-28 ${type === "panel" ? "flex-row md:flex-col xl:flex-row" : "flex-col"}`}>
                 <div className="relative flex-1 rounded-md">
                     <NavLink to={`/watch?v=${item._id}`} className="shrink">
@@ -36,13 +36,13 @@ const VideoCard = ({ item, type }) => {
                         />
                         <Badge
                             variant="none"
-                            className="absolute right-2 bottom-2 text-black bg-white"
+                            className="absolute text-black bg-white right-2 bottom-2"
                         >
                             {formatTime(item.duration)}
                         </Badge>
                     </NavLink >
                 </div>
-                <div className="flex relative flex-1 justify-between items-center space-x-2">
+                <div className="relative flex items-center justify-between flex-1 space-x-2">
                     <NavLink to={`/watch?v=${item._id}`} className="shrink">
                         <div className="flex flex-col gap-2 p-2">
                             <h4 className="w-full font-semibold leading-6 text-ellipsis line-clamp-2">

@@ -42,8 +42,8 @@ const DeleteVideo = ({ fnc, id }) => {
                 <PopoverTrigger>
                     <Trash2 />
                 </PopoverTrigger>
-                <PopoverContent className="flex gap-2 items-center px-2 py-0 w-fit">
-                    <Alert className="space-x-2 w-96 border-none">
+                <PopoverContent className="flex flex-col items-center gap-2 px-2 py-0 pb-2 sm:flex-row">
+                    <Alert className="space-x-2 border-none w-60">
                         <AlertTriangle />
                         <AlertTitle>Are you absolutely sure?</AlertTitle>
                         <AlertDescription className="text-accent-foreground/80">

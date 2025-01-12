@@ -5,6 +5,7 @@ import {
 } from "@/components/ui/popover"
 import { EllipsisVertical } from "lucide-react"
 import AddToPlaylist from "../PlayList/AddToPlaylist"
+import PropTypes from "prop-types"
 
 const VideoActions = ({ videoId }) => {
     return (
@@ -22,6 +23,10 @@ const VideoActions = ({ videoId }) => {
 
         </div>
     )
+}
+
+VideoActions.propTypes = {
+    videoId: PropTypes.string
 }
 
 export default VideoActions

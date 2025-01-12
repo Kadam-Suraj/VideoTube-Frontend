@@ -26,11 +26,11 @@ const Footer = () => {
         }
     ]
     return (
-        <footer className="flex items-center h-16 p-3 border-t justify-evenly sm:hidden">
+        <footer className="flex items-center h-16 p-3 border-t shrink-0 justify-evenly sm:hidden">
             {
                 footerMenu.map((item, idx) =>
                     <div key={idx}>
-                        <NavLink to={item.link} className={`${({ isActive }) => isActive && "underline"} flex flex-col items-center`}>
+                        <NavLink to={item.link} className={`${({ isActive }) => isActive ? "font-bold" : "underline"} flex flex-col items-center`}>
                             {item.ele}
                             <span>
                                 {item.name}

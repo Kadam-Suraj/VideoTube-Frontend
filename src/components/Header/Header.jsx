@@ -13,7 +13,7 @@ const Header = () => {
     const [activeSearch, setActiveSearch] = useState(false);
 
     return (
-        <section className="flex sticky top-0 right-0 left-0 z-[100] justify-center items-center px-4 mx-auto h-16 bg-background">
+        <section className="flex row-span-1 sticky top-0 right-0 left-0 z-[100] justify-center w-full items-center px-4 mx-auto h-16 bg-background">
             <header className="relative flex items-center justify-between w-full space-x-2 max-w-screen-2xl">
                 {
                     !activeSearch &&
@@ -35,7 +35,7 @@ const Header = () => {
                                         <Search />
                                 }
                             </span>
-                            <SearchBar activeSearch={setActiveSearch} className={`right-0 left-0 top-16 w-full  ${activeSearch ? "flex" : "max-[640px]:hidden"}`} />
+                            <SearchBar activeSearch={setActiveSearch} className={`right-0 left-0 top-16 w-full  ${activeSearch ? "flex" : "max-sm:hidden"}`} />
                         </div>
                     }
                     {

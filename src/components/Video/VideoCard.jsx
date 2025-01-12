@@ -60,7 +60,7 @@ const VideoCard = ({ item, type }) => {
                     </NavLink>
                     {/* Prevent navigation when interacting with VideoActions */}
                     <span className="right-0 self-start" onClick={(e) => e.stopPropagation()}>
-                        <VideoActions />
+                        <VideoActions videoId={item._id} />
                     </span>
                 </div>
             </div>

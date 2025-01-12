@@ -7,7 +7,6 @@ import {
     DialogTrigger,
 } from "@/components/ui/dialog"
 
-import { Button } from "../ui/button"
 import { useEffect, useState } from "react";
 import { addVideoFromPlaylist, checkVideoInPlaylist, getAllPlaylists, removeVideoFromPlaylist } from "@/api/playlist";
 import { Bookmark, LockKeyhole } from "lucide-react";
@@ -17,6 +16,7 @@ import Loading from "../Loading";
 import CreatePlaylist from "./CreatePlaylist";
 import LoadingCircle from "../LoadingCircle";
 import { useToast } from "@/hooks/use-toast";
+import PropTypes from "prop-types";
 
 const AddToPlaylist = ({ videoId, className, value }) => {
     const { loggedInUser } = useAuth()
@@ -25,7 +25,6 @@ const AddToPlaylist = ({ videoId, className, value }) => {
     const [playList, setPlayList] = useState(null);
     const [isLoading, setIsLoading] = useState(true);
     const [processingItemId, setProcessingItemId] = useState(null);
-    const [isInPlaylist, setIsInPlaylist] = useState([]);
     const [videoInPlaylist, setVideoInPlaylist] = useState([]);
 
     const getPlayList = async () => {
@@ -79,12 +78,12 @@ const AddToPlaylist = ({ videoId, className, value }) => {
 
     useEffect(() => {
         if (playList) handlePlaylistCheck();
-    }, [playList]);
+    }, [playList, videoId]);
 
     return (
         <span className={`relative ${className}`}>
             <Dialog>
-                <DialogTrigger className="flex gap-2 items-center" onClick={getPlayList}>
+                <DialogTrigger className="flex items-center gap-2" onClick={getPlayList}>
                     <Bookmark className="relative -mb-1" />
                     <span>
                         {value}
@@ -102,9 +101,9 @@ const AddToPlaylist = ({ videoId, className, value }) => {
                                 playList?.docs.length ?
                                     playList?.docs.map((item, idx) => {
                                         return (
-                                            <div key={item._id} className="flex gap-2 items-center p-2 rounded-md cursor-pointer hover:bg-muted/40">
-                                                <div className="flex items-center space-x-2 w-full" onClick={() => addRemovePlaylist(item._id)}>
-                                                    <span className="flex relative justify-center items-center w-5">
+                                            <div key={item._id} className="flex items-center gap-2 p-2 rounded-md cursor-pointer hover:bg-muted/40">
+                                                <div className="flex items-center w-full space-x-2" onClick={() => addRemovePlaylist(item._id)}>
+                                                    <span className="relative flex items-center justify-center w-5">
                                                         {
                                                             processingItemId === item?._id ?
                                                                 <span className="absolute left-1">
@@ -116,7 +115,7 @@ const AddToPlaylist = ({ videoId, className, value }) => {
                                                     </span>
                                                     <span>{item.name}</span>
                                                 </div>
-                                                <span className="justify-self-end ml-auto">
+                                                <span className="ml-auto justify-self-end">
                                                     {!item?.isPublic && <LockKeyhole size={20} />}
                                                 </span>
                                             </div>
@@ -131,6 +130,12 @@ const AddToPlaylist = ({ videoId, className, value }) => {
             </Dialog>
         </span>
     )
+}
+
+AddToPlaylist.propTypes = {
+    videoId: PropTypes.string,
+    className: PropTypes.string,
+    value: PropTypes.string
 }
 
 export default AddToPlaylist

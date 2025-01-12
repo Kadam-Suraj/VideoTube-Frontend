@@ -7,7 +7,7 @@ const Home = () => {
 
     return (
         <>
-            <section className="flex flex-col m-auto">
+            <section className="flex flex-col">
                 {
                     isLoggedIn ?
                         < ShowVideos />

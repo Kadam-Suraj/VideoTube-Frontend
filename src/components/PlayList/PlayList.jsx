@@ -45,7 +45,7 @@ const PlayList = ({ user }) => {
                                 playlists?.docs.length > 0 ?
                                     <div className="grid gap-4">
                                         <h3 className="text-lg font-medium">Created playlists</h3>
-                                        <div className="grid gap-4 w-full sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+                                        <div className="grid w-full gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
                                             {
                                                 playlists?.docs.map((item, idx) => {
                                                     if (item?.totalVideos)
@@ -72,7 +72,7 @@ const PlayListCard = ({ item, fetchPlaylists }) => {
         <Card className="mx-auto shrink min-h[20.5rem] min-w[22.5rem] p-0 border-none">
             <div className={`grid gap-1 justify-between rounded-md group`}>
                 < NavLink to={`/watch?v=${item.video._id}&playlist=${item._id}`} >
-                    <div className="relative flex-1 rounded-md transition-all duration-300 group-hover:scale-105 hover:shadow-lg">
+                    <div className="relative flex-1 transition-all duration-300 rounded-md sm:hover:scale-105 sm:hover:shadow-lg">
                         <img
                             src={item.video.thumbnail || ""}
                             alt={item.name || "Thumbnail"}
@@ -84,9 +84,9 @@ const PlayListCard = ({ item, fetchPlaylists }) => {
                         </div>
                     </div>
                 </NavLink>
-                <div className="flex relative justify-between items-center">
+                <div className="relative flex items-center justify-between">
                     <NavLink to={`/watch?v=${item.video._id}&playlist=${item._id}`} >
-                        <div className="flex flex-col flex-1 gap-1 p-2 w-full">
+                        <div className="flex flex-col flex-1 w-full gap-1 p-2">
                             <h4 className="w-full font-semibold leading-6 text-ellipsis line-clamp-2">
                                 {item.name || "Untitled"}
                             </h4>

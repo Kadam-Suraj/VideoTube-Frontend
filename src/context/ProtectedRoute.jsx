@@ -2,7 +2,7 @@ import { useAuth } from "@/context/AuthContext";
 import { useState } from "react";
 import { useToast } from "@/hooks/use-toast";
 import PropTypes from "prop-types";
-import { Navigate, useLocation } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import Error from "@/pages/Error";
 
 const ProtectedRoute = ({ children }) => {

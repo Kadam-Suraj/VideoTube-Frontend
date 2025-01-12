@@ -24,7 +24,7 @@ const AddContent = ({ fnc, api, type, id }) => {
             <div className="self-start mt-4">
                 <Avatar url={loggedInUser?.avatar} />
             </div>
-            <div className="w-full">
+            <div className="flex-grow">
                 <Textarea
                     type="text"
                     placeholder={`Add a ${type}...`}

@@ -17,7 +17,7 @@ const Layout = () => {
                     <div className="hidden sm:block">
                         <SideBar />
                     </div>
-                    <div className="w-full p-2 overflow-y-scroll overflow-x-clip">
+                    <div className="flex flex-col flex-grow w-full h-full p-2 overflow-y-scroll overflow-x-clip">
                         <Outlet />
                     </div>
                 </div>

@@ -9,7 +9,7 @@ import VideoActions from "./VideoActions";
 
 const VideoCardLayout = ({ videos }) => {
     return (
-        <div className="grid w-full gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+        <div className="grid h-full gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
             {
                 videos?.docs.map((item, key) => (
                     <VideoCard item={item} key={key} />
@@ -25,14 +25,14 @@ VideoCardLayout.propTypes = {
 
 const VideoCard = ({ item, type }) => {
     return (
-        <Card className="mx-auto transition-all duration-300 shrink sm:hover:scale-[1.03] hover:shadow-lg p-0 border-none">
+        <Card className="p-0 mx-auto border-none shrink">
             <div className={`flex justify-between gap-1 rounded-md cursor-pointer max-[363px]:flex-col min-h-28 ${type === "panel" ? "flex-row md:flex-col xl:flex-row" : "flex-col"}`}>
-                <div className="relative flex-1 rounded-md">
+                <div className="relative flex-1 rounded-md sm:hover:scale-[1.03] aspect-video transition-all duration-300 sm:hover:shadow-lg">
                     <NavLink to={`/watch?v=${item._id}`} className="shrink">
                         <img
                             src={item.thumbnail || "default-thumbnail.jpg"}
                             alt={item.title || "Thumbnail"}
-                            className="object-cover w-full rounded-md aspect-video"
+                            className="object-cover w-full h-full rounded-md aspect-video"
                         />
                         <Badge
                             variant="none"
@@ -43,7 +43,7 @@ const VideoCard = ({ item, type }) => {
                     </NavLink >
                 </div>
                 <div className="relative flex items-center justify-between flex-1 space-x-2">
-                    <NavLink to={`/watch?v=${item._id}`} className="shrink">
+                    <NavLink to={`/watch?v=${item._id}`} className="flex-grow">
                         <div className="flex flex-col gap-2 p-2">
                             <h4 className="w-full font-semibold leading-6 text-ellipsis line-clamp-2">
                                 {item.title || "Untitled"}
@@ -59,7 +59,7 @@ const VideoCard = ({ item, type }) => {
                         </div>
                     </NavLink>
                     {/* Prevent navigation when interacting with VideoActions */}
-                    <span className="right-0 self-start" onClick={(e) => e.stopPropagation()}>
+                    <span className="absolute right-0 self-start top-3" onClick={(e) => e.stopPropagation()}>
                         <VideoActions videoId={item._id} />
                     </span>
                 </div>

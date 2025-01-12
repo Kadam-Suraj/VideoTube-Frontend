@@ -8,7 +8,6 @@ import { VideoCardLayout } from "./VideoCard";
 const ShowVideos = () => {
 
     const [isLoading, setIsLoading] = useState(true);
-
     const [videos, setVideos] = useState(null);
 
     useEffect(() => {
@@ -23,8 +22,8 @@ const ShowVideos = () => {
     }, []);
     return (
         <>
-            <section className="">
-                <div className="flex items-center justify-center gap-4">
+            <section className="h-full">
+                <div className="flex items-center justify-center h-full">
                     {isLoading ?
                         <Loading />
                         :

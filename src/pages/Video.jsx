@@ -12,26 +12,26 @@ const Video = () => {
     const playlistId = searchParams.get("playlist");
     const [data, setData] = useState(null);
 
+    const fetchData = async () => {
+        const response = await checkId(videoId);
+        setData(response);
+    };
     useEffect(() => {
-        (async () => {
-            const response = await checkId(videoId);
-            setData(response);
-        })();
+        fetchData();
     }, [videoId, playlistId]);
 
     const error = {
-        title: "Oops!", message: "Video not found", fallback: "Go back", link: "/"
+        title: "Video not found!", message: "Invalid video link or video removed", fallback: "Go back", link: "/"
     }
 
-    // if (!data?.success) {
-    //     searchParams.delete("v");
-    //     return <Error data={error} code={404} />
-    // }
+    if (!data?.success) {
+        return <Error data={error} code={404} />
+    }
 
     return (
-        <section className="grid grid-cols-1 justify-center my-10 md:space-x-3 max-[768px]:space-y-8 min-h-screen md:grid-cols-4">
+        <section className="grid justify-center grid-cols-1 gap-3 divide-x-2 md:grid-cols-4">
             <VideoById className="col-span-3" id={videoId} />
-            <div className="col-span-1 space-y-10">
+            <div className="col-span-1 pl-1 space-y-10 overflow-x-hidden overflow-y-auto">
                 {
                     playlistId &&
                     <PlaylistVideos />

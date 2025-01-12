@@ -55,7 +55,7 @@ const VideoById = ({ id, className }) => {
                             <div className="flex-auto gap-4 space-y-5">
                                 <VideoPlayer video={video} />
                                 <h2 className="text-xl font-medium text-wrap text-ellipsis line-clamp-4">{video.title}</h2>
-                                <div className="flex items-center justify-between mt-2">
+                                <div className="flex items-center justify-between">
                                     <span className="flex flex-wrap items-center w-full gap-3 space-y-4">
                                         <UserInfo channel={video?.owner} />
                                         <Subscribe fnc={user} owner={video?.owner} />

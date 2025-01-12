@@ -13,16 +13,16 @@ import { NavLink, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { useAuth } from "@/context/AuthContext";
 import { Avatar } from "../Avatar";
+import LoadingCircle from "../LoadingCircle";
 
 const ProfileMenu = () => {
-    const { logout, user, loggedInUser } = useAuth();
+    const { logout, loggedInUser } = useAuth();
     const { toast } = useToast();
     const navigate = useNavigate();
     const [open, setOpen] = useState(false);
 
     const handleLogout = async () => {
         const res = await logOutUser();
-
         if (res.data.success) {
             logout();
             toast({
@@ -46,15 +46,17 @@ const ProfileMenu = () => {
     }
 
     useEffect(() => {
-        user();
+        // user();
     }, []);
 
 
     return (
         <DropdownMenu open={open} onOpenChange={setOpen}>
-            <DropdownMenuTrigger className="py-2">
-                {loggedInUser &&
+            <DropdownMenuTrigger className="relative flex items-center justify-center mt-1 rounded-full w-14">
+                {loggedInUser ?
                     <Avatar url={loggedInUser?.avatar} />
+                    :
+                    <LoadingCircle />
                 }
             </DropdownMenuTrigger>
             <DropdownMenuContent>

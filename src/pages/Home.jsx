@@ -7,15 +7,13 @@ const Home = () => {
 
     return (
         <>
-            <section className="">
-                <div>
-                    {
-                        isLoggedIn ?
-                            < ShowVideos />
-                            :
-                            <Error code={401} />
-                    }
-                </div>
+            <section className="flex flex-col m-auto">
+                {
+                    isLoggedIn ?
+                        < ShowVideos />
+                        :
+                        <Error code={401} />
+                }
             </section >
         </>
     )

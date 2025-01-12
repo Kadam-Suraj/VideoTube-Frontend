@@ -27,7 +27,7 @@ const Header = () => {
                 <nav className="flex items-center justify-end w-full space-x-4">
                     {
                         <div className={`flex items-center space-x-5 ${activeSearch ? "max-[640px]:w-full" : ""}`}>
-                            <span className="cursor-pointer min-[640px]:hidden" onClick={() => setActiveSearch(!activeSearch)} >
+                            <span className={`cursor-pointer min-[640px]:hidden ${!isLoggedIn && "pointer-events-none"}`} onClick={() => setActiveSearch(!activeSearch)} >
                                 {
                                     activeSearch ?
                                         <ArrowLeft />

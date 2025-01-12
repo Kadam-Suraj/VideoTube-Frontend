@@ -10,23 +10,31 @@ export const AuthProvider = ({ children }) => {
     const { toast } = useToast();
 
     const [isLoggedIn, setIsLoggedIn] = useState(() => {
-        const savedState = localStorage.getItem("isLoggedIn");
-        return Boolean(savedState); // Convert string to boolean
+        return JSON.parse(localStorage.getItem("isLoggedIn")) || false;
     });
 
-    const [session, setSession] = useState(true);
+    const [session, setSession] = useState(() => {
+        return JSON.parse(localStorage.getItem("activeSession")) || false;
+    });
 
     const [loggedInUser, setLoggedInUser] = useState(null);
 
     const login = () => {
-        setIsLoggedIn(true);
         setSession(true);
+        setIsLoggedIn(true);
         localStorage.setItem("isLoggedIn", true);
+        localStorage.setItem("activeSession", true);
+    }
+
+    const sessionExpired = () => {
+        setIsLoggedIn(false);
+        localStorage.removeItem("isLoggedIn");
     }
     const logout = () => {
-        setIsLoggedIn(false);
         setSession(false);
+        setIsLoggedIn(false);
         localStorage.removeItem("isLoggedIn");
+        localStorage.removeItem("activeSession");
     };
 
     const user = async () => {
@@ -36,23 +44,31 @@ export const AuthProvider = ({ children }) => {
             setLoggedInUser(response.data.data);
         }
         if (response.data.statusCode === 401) {
-            logout();
+            sessionExpired();
             toast({
                 variant: "destructive",
                 title: "Session Expired",
                 description: "Please login again",
             });
         }
+        // else {
+        //     logout();
+        //     toast({
+        //         variant: "destructive",
+        //         title: "Session Expired",
+        //         description: "Please login again",
+        //     });
+        // }
     }
 
     useEffect(() => {
         if (isLoggedIn) {
             user();
         }
-    }, []);
+    }, [isLoggedIn]);
 
     return (
-        <AuthContext.Provider value={{ isLoggedIn, user, login, logout, loggedInUser, session }}>
+        <AuthContext.Provider value={{ isLoggedIn, user, login, logout, loggedInUser, session, setSession }}>
             {children}
         </AuthContext.Provider>
     );
@@ -60,7 +76,7 @@ export const AuthProvider = ({ children }) => {
 };
 
 AuthProvider.propTypes = {
-    children: PropTypes.any.isRequired,
+    children: PropTypes.node.isRequired,
 };
 
 // Custom hook for accessing auth context

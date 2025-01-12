@@ -56,10 +56,10 @@ const PlaylistVideos = ({ className }) => {
                         {playlist?.videos.map((item, key) => {
 
                             return <NavLink key={key} to={`/watch?v=${item._id}&playlist=${playlistId}`} className="shrink">
-                                <Card className="mx-auto transition-all duration-300 shrink hover:scale-[1.03] hover:shadow-lg p-0 border-none">
+                                <Card className="mx-auto transition-all duration-300 shrink sm:hover:scale-[1.03] sm:hover:shadow-lg p-0 border-none">
                                     <div className="flex items-center">
                                         <div className={`flex relative gap-1 justify-between ${item?._id === videoId && "bg-accent border border-border"} rounded-md cursor-pointer min-h-28 max-[363px]:flex-col md:flex-col xl:flex-row`}>
-                                            <span className="absolute top-1 left-1 z-10 self-center px-2 text-sm rounded backdrop-blur text-background bg-foreground">{key + 1}</span>
+                                            <span className="absolute z-10 self-center px-2 text-sm rounded top-1 left-1 backdrop-blur text-background bg-foreground">{key + 1}</span>
                                             <div className="relative flex-1 rounded-md">
                                                 <img
                                                     src={item.thumbnail || "default-thumbnail.jpg"}
@@ -68,7 +68,7 @@ const PlaylistVideos = ({ className }) => {
                                                 />
                                                 <Badge
                                                     variant="none"
-                                                    className="absolute right-2 bottom-2 text-black bg-white"
+                                                    className="absolute text-black bg-white right-2 bottom-2"
                                                 >
                                                     {formatTime(item.duration)}
                                                 </Badge>

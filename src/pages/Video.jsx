@@ -29,9 +29,9 @@ const Video = () => {
     }
 
     return (
-        <section className="grid justify-center grid-cols-1 gap-3 divide-x-2 md:grid-cols-4">
+        <section className="grid justify-center grid-cols-1 gap-3 overflow-y-auto md:grid-cols-4">
             <VideoById className="col-span-3" id={videoId} />
-            <div className="col-span-1 pl-1 space-y-10 overflow-x-hidden overflow-y-auto">
+            <div className="col-span-1 space-y-10 overflow-x-hidden">
                 {
                     playlistId &&
                     <PlaylistVideos />

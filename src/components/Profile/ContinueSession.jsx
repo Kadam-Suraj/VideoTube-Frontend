@@ -3,9 +3,11 @@ import { useAuth } from "@/context/AuthContext";
 import { Button } from "../ui/button";
 import { useToast } from "@/hooks/use-toast";
 import NavigateButton from "../NavigateButton";
+import { useNavigate } from "react-router-dom";
 
 const ContinueSession = () => {
 
+    const navigate = useNavigate();
     const { toast } = useToast();
     const { user, session, isLoggedIn } = useAuth();
 
@@ -23,6 +25,12 @@ const ContinueSession = () => {
                 description: "You are now logged in",
             });
             user();
+        } else {
+            toast({
+                title: "Session Refresh Failed",
+                description: "Please login again",
+            });
+            navigate("/login");
         }
     }
 

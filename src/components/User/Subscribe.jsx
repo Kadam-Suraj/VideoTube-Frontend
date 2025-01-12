@@ -2,8 +2,9 @@ import { subscribeUser } from "@/api/user.api";
 import { Button } from "../ui/button";
 import PropTypes from "prop-types";
 import { useAuth } from "@/context/AuthContext";
+import { useNavigate } from "react-router-dom";
 const Subscribe = ({ fnc, owner, className }) => {
-
+    const navigate = useNavigate();
     const { loggedInUser } = useAuth();
 
     const handleSubscribe = async (id) => {
@@ -23,7 +24,7 @@ const Subscribe = ({ fnc, owner, className }) => {
                             {owner?.isSubscribed ? "Subscribed" : "Subscribe"}
                         </Button>
                         :
-                        <span className="px-4 py-2 font-semibold rounded-full bg-accent-foreground/10">Your Channel</span>
+                        <span className="px-4 py-2 font-semibold rounded-full cursor-pointer bg-accent-foreground/10" onClick={() => navigate("/user-profile")}>Manage profile</span>
                 }
             </div>
         </>
@@ -32,6 +33,7 @@ const Subscribe = ({ fnc, owner, className }) => {
 
 Subscribe.propTypes = {
     fnc: PropTypes.func,
+    className: PropTypes.string,
     owner: PropTypes.shape({
         _id: PropTypes.string,
         isSubscribed: PropTypes.bool,

@@ -28,7 +28,7 @@ const AddContent = ({ fnc, api, type, id }) => {
                 <Textarea
                     type="text"
                     placeholder={`Add a ${type}...`}
-                    className="order-none border-0 border-b resize-none min-h-10 focus-visible:ring-transparent b-accent-foreground/10"
+                    className="order-none border-0 border-b rounded-none resize-none min-h-10 focus-visible:ring-transparent b-accent-foreground/10"
                     onClick={() => setIsClicked(true)}
                     onChange={(e) => setValue(e.target.value)}
                     value={value}

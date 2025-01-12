@@ -30,15 +30,15 @@ const Dashboard = () => {
     const memoizedUser = useMemo(() => loggedInUser, [loggedInUser]);
     return (
         <>
-            <section className="relative flex flex-col items-center">
+            <section className="relative flex flex-col items-center gap-5">
                 <div className="self-end">
                     <HealthCheck />
                 </div>
                 {!loggedInUser ? <ProfileSkeleton /> :
-                    <div className="grid w-full grid-cols-1 gap-5 my-10">
-                        <div className="flex items-center max-[450px]:flex-col justify-between gap-5">
+                    <div className="grid w-full grid-cols-1 gap-5">
+                        <div className="flex flex-wrap justify-between w-full gap-10">
                             <AdminHeader username={memoizedUser.fullName} />
-                            <span className="self-end">
+                            <span className="ml-auto">
                                 < UploadVideo />
                             </span>
                         </div>

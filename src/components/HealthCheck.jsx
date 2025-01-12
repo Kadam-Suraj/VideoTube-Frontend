@@ -45,8 +45,8 @@ const HealthCheck = () => {
                             <span className={`absolute inline-flex w-full h-full rounded-full opacity-75 animate-ping ${health?.success ? "bg-green-500" : "bg-red-500"}`} />
                         </span>
                         <div className="flex flex-col text-sm font-semibold">
-                            <span className="">Database: <span className={`${health?.success ? "text-green-500" : "text-red-500"} animate-pulse`}>
-                                {health?.database || "Disconnected"}
+                            <span className="">Server: <span className={`${health?.success ? "text-green-500" : "text-red-500"} animate-pulse`}>
+                                {health?.server || "Offline"}
                             </span>
                             </span>
                             <span className="">Status: <span className={`${health?.success ? "text-green-500" : "text-red-500"} animate-pulse`}>

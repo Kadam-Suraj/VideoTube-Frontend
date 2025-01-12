@@ -42,14 +42,16 @@ const Header = () => {
                         !activeSearch &&
                         <div className="flex items-center gap-2">
                             <ul>
-                                {
-                                    (!isLoggedIn && !(location.pathname === "/login")) &&
-                                    <ContinueSession />
-                                }
-                                {
-                                    (isLoggedIn && !(location.pathname === "/login")) &&
-                                    <ProfileMenu />
-                                }
+                                <li>
+                                    {
+                                        (!isLoggedIn && !(location.pathname === "/login")) &&
+                                        <ContinueSession />
+                                    }
+                                    {
+                                        (isLoggedIn && !(location.pathname === "/login")) &&
+                                        <ProfileMenu />
+                                    }
+                                </li>
                             </ul>
                             <ModeToggle />
                         </div>

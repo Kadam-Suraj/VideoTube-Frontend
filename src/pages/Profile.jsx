@@ -1,4 +1,3 @@
-// import EditProfile from "@/components/Profile/EditProfile";
 import { useState, useMemo, useEffect } from "react";
 import { currentUser } from "@/api/user.api";
 
@@ -28,9 +27,9 @@ const Profile = () => {
     return (
         <>
             {!loggedInUser ? <ProfileSkeleton /> :
-                <div className="container grid grid-cols-1 gap-5 mx-auto my-10">
+                <div className="grid w-full grid-cols-1 gap-5 mx-auto">
                     <ProfileBanner memoizedUser={memoizedUser} />
-                    <span className="w-full h-[.1rem] bg-gray-300 dark:bg-gray-800" />
+                    <MenubarSeparator />
                     <div>
                         <Tabs defaultValue="personal">
                             <TabsList className="grid justify-around w-full grid-cols-3 bg-transparent">
@@ -71,12 +70,13 @@ import EditPersonalInfo from "@/components/Profile/EditPersonalInfo";
 import EditChannelInfo from "@/components/Profile/EditChannelInfo";
 import ChangePassword from "@/components/Profile/ChangePassword";
 import ProfileBanner from "@/components/Profile/ProfileBanner";
+import { MenubarSeparator } from "@/components/ui/menubar";
 
 const ProfileSkeleton = () => {
     return (
-        <div className="container grid h-screen grid-cols-1 gap-5 px-5 mx-auto my-10">
-            <div className="relative grid grid-cols-1 gap-5 p-5 md:grid-cols-">
-                <Skeleton className="object-cover object-center w-full rounded-md h-80" />
+        <div className="grid w-full grid-cols-1 gap-5 mx-auto">
+            <div className="relative grid grid-cols-1 gap-5 md:grid-cols-">
+                <Skeleton className="object-cover object-center w-full rounded-md h-60" />
                 <div className="flex flex-col items-start gap-5 sm:flex-row">
                     <Skeleton className="w-40 rounded-full -bottom-20 md:w-48" />
                     <div className="flex flex-col justify-center gap-2 mt-5">
@@ -87,7 +87,7 @@ const ProfileSkeleton = () => {
                     </div>
                 </div>
             </div>
-            <span className="w-full h-[.1rem] bg-gray-300 dark:bg-gray-800" />
+            <MenubarSeparator />
             <div>
                 <Skeleton className="w-48 h-8" />
                 <div className="mt-2">

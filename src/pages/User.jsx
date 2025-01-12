@@ -29,7 +29,7 @@ const User = () => {
     }, [username]);
 
     return (
-        <div className="flex flex-col justify-center w-full min-h-80">
+        <div className="flex flex-col justify-center w-full">
             {!user ?
                 <div className="text-center">
                     < Loading />
@@ -39,7 +39,7 @@ const User = () => {
                     <ProfileBanner fnc={fetchUser} stats={true} memoizedUser={user} />
                     <div>
                         <Tabs defaultValue="video">
-                            <TabsList className="grid grid-cols-4 justify-around w-full bg-transparent">
+                            <TabsList className="grid justify-around w-full grid-cols-4 bg-transparent">
                                 <TabsTrigger value="video" className="rounded-none">
                                     Videos
                                 </TabsTrigger>
@@ -53,8 +53,8 @@ const User = () => {
                                     Subscribed
                                 </TabsTrigger>
                             </TabsList>
-                            <MenubarSeparator className="my-1" />
-                            <div className="my-10">
+                            <MenubarSeparator />
+                            <div className="my-2">
                                 <TabsContent value="video">
                                     <UserVideos userId={user._id} />
                                 </TabsContent>

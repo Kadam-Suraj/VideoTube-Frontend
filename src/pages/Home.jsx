@@ -12,7 +12,7 @@ const Home = () => {
                     isLoggedIn ?
                         < ShowVideos />
                         :
-                        <Error code={401} />
+                        <Error data={{ code: 401, message: "User is not logged in. Please log in to continue.", title: "Unauthorized", fallback: "Login", link: "/login" }} />
                 }
             </section >
         </>

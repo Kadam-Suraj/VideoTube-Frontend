@@ -38,6 +38,33 @@ const router = createBrowserRouter(
         </ProtectedRoute>
       } />
 
+      {/* temp routes until development completes */}
+      <Route path="/collections" element={
+        <ProtectedRoute>
+          <Error code={503} />
+        </ProtectedRoute>
+      } />
+      <Route path="/history" element={
+        <ProtectedRoute>
+          <Error code={503} />
+        </ProtectedRoute>
+      } />
+      <Route path="/subscribers" element={
+        <ProtectedRoute>
+          <Error code={503} />
+        </ProtectedRoute>
+      } />
+      <Route path="/support" element={
+        <ProtectedRoute>
+          <Error code={503} />
+        </ProtectedRoute>
+      } />
+      <Route path="/settings" element={
+        <ProtectedRoute>
+          <Error code={503} />
+        </ProtectedRoute>
+      } />
+
       {/* Catch-All Route */}
       <Route path="*" element={<Error />} />
     </Route>

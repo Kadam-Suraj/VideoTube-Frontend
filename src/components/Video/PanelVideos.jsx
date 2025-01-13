@@ -50,7 +50,8 @@ const PanelVideos = ({ id, className }) => {
 }
 
 PanelVideos.propTypes = {
-    id: PropTypes.string
+    id: PropTypes.string,
+    className: PropTypes.string
 }
 
 export default PanelVideos

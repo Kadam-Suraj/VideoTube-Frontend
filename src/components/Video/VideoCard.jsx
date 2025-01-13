@@ -43,7 +43,7 @@ const VideoCard = ({ item, type }) => {
                     </NavLink >
                 </div>
                 <div className="relative flex items-center justify-between flex-1 space-x-2">
-                    <NavLink to={`/watch?v=${item._id}`} className="flex-grow">
+                    <NavLink to={`/watch?v=${item._id}`} className="flex-grow pr-4">
                         <div className="flex flex-col gap-2 p-2">
                             <h4 className="w-full font-semibold leading-6 text-ellipsis line-clamp-2">
                                 {item.title || "Untitled"}

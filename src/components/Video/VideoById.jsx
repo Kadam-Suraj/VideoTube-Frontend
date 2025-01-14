@@ -30,7 +30,7 @@ const VideoById = ({ id, className }) => {
     useEffect(() => {
         setTimeout(async () => {
             await updateVideoViews(id);
-        }, 2000);
+        }, 60000);
 
         user();
 
@@ -53,7 +53,10 @@ const VideoById = ({ id, className }) => {
                             <Loading />
                         </div> : video ?
                             <div className="flex-auto gap-4 space-y-5">
-                                <VideoPlayer videoData={video} />
+                                {
+                                    video?.videoFile &&
+                                    < VideoPlayer videoData={video} />
+                                }
                                 <h2 className="text-xl font-medium text-wrap text-ellipsis line-clamp-4">{video.title}</h2>
                                 <div className="flex items-center justify-between">
                                     <span className="flex flex-wrap items-center w-full gap-3 space-y-4">

@@ -63,21 +63,17 @@ const UploadVideo = () => {
             }
         });
 
-        console.log(values);
-
         // Store controller to cancel later
         setAbortController(controller);
 
         const response = await addVideo(
             values,
             (progress) => {
-                console.log(`Upload Progress: ${progress}%`);
                 // You can update a progress bar here
                 setProgress(progress);
             },
             signal
         );
-        console.log(response);
         if (response.data.success) {
             setVideo(response.data.success);
             toast({

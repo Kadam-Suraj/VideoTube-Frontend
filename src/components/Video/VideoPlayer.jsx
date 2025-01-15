@@ -137,6 +137,7 @@ const VideoPlayer = ({ videoData }) => {
             player.pause();
             setIsPlaying(false);
         }
+        middleCircle();
     }
 
     // Update currentTime as the video plays
@@ -277,7 +278,7 @@ const VideoPlayer = ({ videoData }) => {
             <div
                 onMouseMove={handleMouseMove}
                 className="absolute top-0 bottom-0 left-0 right-0 flex flex-col">
-                <div onClick={handleClick} className="relative flex items-center justify-center flex-grow">
+                <div onClick={handleClick} className="relative flex items-center justify-center flex-grow text-white">
                     < LoadingCircle className={`${isLoading ? "opacity-100" : "opacity-0"} absolute top-0 bottom-0 left-0 right-0 transition-all duration-500 m-auto w-12 h-12`} />
                     {
                         !isMobile &&

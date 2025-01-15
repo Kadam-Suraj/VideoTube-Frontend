@@ -210,16 +210,6 @@ export const togglePublish = async (id) => {
     }
 }
 
-export const updateVideo = async (id, data) => {
-    try {
-        const response = await axios.patch(`/api/v1/videos/${id}`, data, options);
-        return response.data;
-
-    } catch (error) {
-        throw new error("Failed to get stats");
-    }
-}
-
 export const deleteVideo = async (id) => {
     try {
         const response = await axios.delete(`/api/v1/videos/${id}`, options);

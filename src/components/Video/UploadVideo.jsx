@@ -17,8 +17,7 @@ const formSchema = z.object({
     videoFile: z
         .instanceof(File, { message: "File must be a video." })
         .refine((file) => file.type.startsWith("video/"), { message: "File must be a valid video type." })
-    // .refine((file) => file.size <= 50000000, { message: "File size must be less than 50MB." }),
-    ,
+        .refine((file) => file.size <= 100000000, { message: "File size must be less than 100MB." }),
     thumbnail: z
         .instanceof(File, { message: "File must be an image." })
         .refine((file) => file.type.startsWith("image/"), { message: "File must be a valid image type." })

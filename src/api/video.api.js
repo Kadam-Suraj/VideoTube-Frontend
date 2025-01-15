@@ -124,33 +124,18 @@ export const addVideo = async (data, onProgress, signal) => {
     }
 };
 
-export const updateVideoThumbnail = async (data, onProgress, signal, id) => {
-    console.log(data)
+export const updateVideo = async (id, data) => {
     try {
-        const response = await axios.post(`/api/v1/videos/${id}`,
-            data,
-            {
-                headers: {
-                    "Content-Type": "multipart/form-data",
-                },
-                withCredentials: true,
-                onUploadProgress: (progressEvent) => {
-                    const progress = Math.round((progressEvent.loaded * 100) / progressEvent.total);
-                    if (onProgress) {
-                        onProgress(progress); // Pass progress to the callback
-                    }
-                },
-                signal
-            }
-        );
-        return response;
+        const response = await axios.patch(`/api/v1/videos/${id}`, data, {
+            headers: {
+                "Content-Type": "multipart/form-data",
+            },
+            withCredentials: true,
+        });
+        return response.data;
 
     } catch (error) {
-        if (axios.isCancel(error)) {
-            console.error("Upload cancelled", error.message);
-        } else {
-            console.error("Error during upload", error);
-        }
-        return error.response
+        console.error(error);
+        return error.response.data;
     }
-};
+}

@@ -60,7 +60,6 @@ const UploadImage = ({ children, api, type }) => {
             },
             signal
         );
-        console.log(response);
         if (response.data.success) {
             setImage(response.data.success);
             toast({
@@ -147,6 +146,7 @@ const UploadImage = ({ children, api, type }) => {
                         </DialogContent>
                     </Dialog>
                     :
+                    isUploading &&
                     <Dialog>
                         <DialogTrigger>
                             <Title className="flex items-center gap-2 px-3 py-2 font-medium rounded-md cursor-pointer">
@@ -187,7 +187,12 @@ const UploadImage = ({ children, api, type }) => {
                                                     <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
                                                     <path className="opacity-75 fill-accent-foreground" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
                                                 </svg>
-                                                Uploading...
+                                                {
+                                                    image ?
+                                                        " Uploading..."
+                                                        :
+                                                        "Upload failed"
+                                                }
                                             </button>
                                             <Progress value={progress} />
                                         </div>
@@ -201,7 +206,7 @@ const UploadImage = ({ children, api, type }) => {
                                 }
                             </div>
                             <div className="flex items-center gap-3">
-                                <Button className="flex-1" variant="outline" onClick={handleCancel}>Cancel</Button>
+                                <Button className="flex-1" variant="outline" onClick={() => { handleCancel(); setIsUploading(false); setImage(null) }}>Cancel</Button>
                                 <Button className="flex-1" disabled={!image} onClick={() => { setIsUploading(false); setImage(null) }}>Finish</Button>
                             </div>
                         </DialogContent>

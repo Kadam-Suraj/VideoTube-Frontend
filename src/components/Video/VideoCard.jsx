@@ -23,9 +23,9 @@ VideoCardLayout.propTypes = {
     videos: PropTypes.object
 }
 
-const VideoCard = ({ item, type }) => {
+const VideoCard = ({ item, type, className }) => {
     return (
-        <Card className="p-0 mx-auto border-none shrink">
+        <Card className={`${className} p-0 mx-auto border-none shrink w-full`}>
             <div className={`flex justify-between gap-1 rounded-md cursor-pointer max-[363px]:flex-col min-h-28 ${type === "panel" ? "flex-row md:flex-col xl:flex-row" : "flex-col"}`}>
                 <div className="relative flex-1 rounded-md sm:hover:scale-[1.03] aspect-video transition-all duration-300 sm:hover:shadow-lg">
                     <NavLink to={`/watch?v=${item._id}`} className="shrink">
@@ -42,9 +42,9 @@ const VideoCard = ({ item, type }) => {
                         </Badge>
                     </NavLink >
                 </div>
-                <div className="relative flex items-center justify-between flex-1 space-x-2">
+                <div className="relative flex items-center self-start justify-between flex-1 space-x-2">
                     <NavLink to={`/watch?v=${item._id}`} className="flex-grow pr-4">
-                        <div className="flex flex-col gap-2 p-2">
+                        <div className="flex flex-col gap-2 px-2">
                             <h4 className="w-full font-semibold leading-6 text-ellipsis line-clamp-2">
                                 {item.title || "Untitled"}
                             </h4>
@@ -81,7 +81,8 @@ VideoCard.propTypes = {
         }),
         createdAt: PropTypes.string
     }),
-    type: PropTypes.string
+    type: PropTypes.string,
+    className: PropTypes.string
 }
 
 export { VideoCardLayout, VideoCard }

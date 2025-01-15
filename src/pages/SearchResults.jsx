@@ -29,7 +29,7 @@ const SearchResults = () => {
     }, [query])
 
     return (
-        <div className="pt-5 mx-auto">
+        <div className="max-w-2xl pt-5 mx-auto">
             {
                 isLoading ?
                     <Loading /> :
@@ -64,10 +64,12 @@ const SearchResults = () => {
 
                             }
                             {
-                                data?.videos?.length > 0 && <div className="">
+                                data?.videos?.length > 0 && <div className="flex flex-col gap-3">
                                     {
                                         data.videos.map((item) =>
-                                            < VideoCard key={item._id} item={item} type="search" />
+                                            <div key={item._id} className="">
+                                                < VideoCard item={item} type="panel" className="" />
+                                            </div>
                                         )
                                     }
                                 </div>

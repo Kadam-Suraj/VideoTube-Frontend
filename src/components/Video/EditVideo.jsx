@@ -24,12 +24,16 @@ import {
     FormMessage,
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
-import { PenBox, Pencil } from "lucide-react"
+import { Pencil } from "lucide-react"
 import { Textarea } from "../ui/textarea"
 import { useToast } from "@/hooks/use-toast"
-import { updateVideo } from "@/api/user.api"
+import { useState } from "react"
+import { updateVideo } from "@/api/video.api"
 
 const formSchema = z.object({
+    thumbnail: z
+        .instanceof(File, { message: "File must be an image." })
+        .refine((file) => file.type.startsWith("image/"), { message: "File must be a valid image type." }),
     title: z.string().min(2, {
         message: "Title must be at least 2 characters.",
     }),
@@ -38,6 +42,7 @@ const formSchema = z.object({
     }),
 })
 const EditVideo = ({ data, fnc }) => {
+    const [image, setImage] = useState(null);
     const { toast } = useToast();
 
     const form = useForm({
@@ -58,11 +63,12 @@ const EditVideo = ({ data, fnc }) => {
                 title: "Video updated successfully",
             })
             return;
+        } else {
+            toast({
+                variant: "destructive",
+                title: response.message || "Failed to update the delete video",
+            })
         }
-        toast({
-            variant: "destructive",
-            title: "Failed to update the delete video",
-        })
     }
 
     return (
@@ -78,17 +84,26 @@ const EditVideo = ({ data, fnc }) => {
                             Edit video information.
                         </DialogDescription>
                     </DialogHeader>
-                    <h2 className="mt-5 text-sm font-medium">Thumbnail</h2>
-                    <section className="relative grid grid-cols-1 gap-5 text-black">
-                        <span className="absolute p-2 bg-white rounded-full top-10 right-10">
-                            <PenBox />
-                        </span>
-                        <img src={data?.thumbnail} alt="coverImage" className="object-contain rounded-md aspect-video" />
-                    </section>
-
-                    <section className="my-8">
+                    <section className="my8">
                         <Form {...form}>
-                            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+                            <form onSubmit={form.handleSubmit(onSubmit)} className="flex flex-col space-y-8">
+                                <FormField
+                                    control={form.control}
+                                    name="thumbnail"
+                                    render={({ field }) => (
+                                        <FormItem className="p-0">
+                                            <FormLabel>Thumbnail</FormLabel>
+                                            <FormControl>
+                                                <section className="relative">
+                                                    <Input type="file"
+                                                        onChange={(e) => { field.onChange(e.target.files[0]); setImage(URL.createObjectURL(e.target.files[0])) }} className="absolute left-0 right-0 mx-auto border-none cursor-pointer backdrop-blur-sm bg-background/50 bottom-2 w-52" />
+                                                    <img src={image || data?.thumbnail} alt="thumbnail" className="object-contain rounded-md aspect-video" />
+                                                </section>
+                                            </FormControl>
+                                            <FormMessage />
+                                        </FormItem>
+                                    )}
+                                />
                                 <FormField
                                     control={form.control}
                                     name="title"
@@ -115,7 +130,7 @@ const EditVideo = ({ data, fnc }) => {
                                         </FormItem>
                                     )}
                                 />
-                                <Button type="submit" >Update info</Button>
+                                <Button disabled={!form.formState.isValid} type="submit" className="self-end" >Update info</Button>
                             </form>
                         </Form>
                     </section>

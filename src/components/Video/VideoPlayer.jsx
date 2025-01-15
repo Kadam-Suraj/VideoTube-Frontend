@@ -2,10 +2,11 @@ import PropTypes from "prop-types"
 import { useEffect, useRef, useState } from "react"
 import { Progress } from "../ui/progress";
 import { Input } from "../ui/input";
-import { Pause, Play, Volume1, Volume2, VolumeOff, VolumeX } from "lucide-react";
+import { Maximize, Pause, Play, RotateCcw, Volume1, Volume2, VolumeOff, VolumeX } from "lucide-react";
 import { Slider } from "../ui/slider";
 import LoadingCircle from "../LoadingCircle";
-import "video.js/dist/video-js.css";
+import "../../style/videojs.css";
+import screenfull from "screenfull";
 import videoJs from "video.js";
 
 const VideoPlayer = ({ videoData }) => {
@@ -13,6 +14,7 @@ const VideoPlayer = ({ videoData }) => {
     const [progress, setProgress] = useState(0);
     const [duration, setDuration] = useState(0);
     const [currentTime, setCurrentTime] = useState("0 : 0");
+    const [seekTime, setSeekTime] = useState(0);
     const [videoLoaded, setVideoLoaded] = useState(0);
     const [isPlaying, setIsPlaying] = useState(false);
     const [isLoading, setIsLoading] = useState(true);
@@ -22,7 +24,9 @@ const VideoPlayer = ({ videoData }) => {
     const [togglePlayPause, setTogglePlayPause] = useState(false);
     const [isMute, setIsMute] = useState(false);
     const [volume, setVolume] = useState(0);
-    // const [noSound, setNoSound] = useState(false);
+    const [popupPosition, setPopupPosition] = useState({ x: 0, y: 0 }); // Popup position
+    const [track, setTrack] = useState(true);
+    const [isFullscreen, setIsFullscreen] = useState(false);
 
     const videoRef = useRef(null);
     const playerRef = useRef(null);
@@ -58,16 +62,27 @@ const VideoPlayer = ({ videoData }) => {
         setCurrentQuality(optimizedUrl);
 
         const options = {
-            controls: false,
             autoplay: true,
-            responsive: true,
-            controlBar: {
-                playToggle: false, // Removes the play button
-                // volumePanel: false, // Removes the volume control
-                fullscreenToggle: false, // Removes the fullscreen button
-            },
-            preload: "auto",
+            // controlBar: {
+            //     playToggle: true,
+            //     volumePanel: { inline: false },
+            //     currentTimeDisplay: true,
+            //     timeDivider: true,
+            //     durationDisplay: true,
+            //     remainingTimeDisplay: true,
+            //     progressControl: true,
+            //     fullscreenToggle: true,
+            //     playbackRateMenuButton: true,
+            //     chaptersButton: true,
+            //     subsCapsButton: true,
+            //     textTrackSettings: true,
+            // },
+            controls: false,
+            fluid: true,
+            nativeControlsForTouch: false,
             poster: videoData?.thumbnail,
+            preload: "auto",
+            responsive: true,
             sources: [
                 {
                     src: optimizedUrl,
@@ -81,24 +96,61 @@ const VideoPlayer = ({ videoData }) => {
         if (videoRef.current && !playerRef.current) {
             const player = videoJs(videoRef.current, options);
             playerRef.current = player;
-
             player.ready(() => {
                 // Add the quality selector plugin
-                const qualityLevels = player.qualityLevels();
+                // const qualityLevels = player.qualityLevels();
 
                 // console.log(qualityLevels)
 
                 // Listen to quality level changes
-                qualityLevels.on('change', () => {
-                    // Ensure the quality levels plugin is available
-                    // const selectedLevel = qualityLevels.selectedIndex;
-                    // console.log('Selected Quality Level:', qualityLevels[selectedLevel]);
-                });
+                // qualityLevels.on('change', () => {
+                //     // Ensure the quality levels plugin is available
+                //     // const selectedLevel = qualityLevels.selectedIndex;
+                //     // console.log('Selected Quality Level:', qualityLevels[selectedLevel]);
+                // });
             });
+            player.height(500);
         }
 
+        if (player) {
+            // Listen to the event
+            player.on('progress', () => {
+                const buffered = player.bufferedEnd(); // End of the buffer range
+                const duration = player.duration();
+                setVideoLoaded((buffered / duration) * 100); // Buffer as a percentage
+            });
+
+            const handleFullscreenChange = () => {
+                if (screenfull.isEnabled) {
+                    setIsFullscreen(screenfull.isFullscreen);
+                }
+            };
+
+            if (screenfull.isEnabled) {
+                screenfull.on("change", handleFullscreenChange);
+            }
+            player.on('timeupdate', handleTimeUpdate);
+            player.on('ended', () => setTrack(false));
+            player.on('play', () => setTrack(true));
+            player.on('loadedmetadata', handleLoadedMetadata);
+            player.on('volumechange', handleVolumeChange);
+
+            // Clean up event listener when component unmounts
+            return () => {
+                if (screenfull.isEnabled) {
+                    screenfull.off("change", handleFullscreenChange);
+                }
+                player.off('progress');
+                player.off('ended');
+                player.off('play');
+                player.off('timeupdate', handleTimeUpdate);
+                player.off('loadedmetadata', handleLoadedMetadata);
+                player.off('volumechange', handleVolumeChange);
+            }
+        };
+
         // return () => {
-        //     if (playerRef.current) {
+        //     if (playerRef.current && !videoRef.current) {
         //         playerRef.current.dispose(); // Cleanup on component unmount
         //         playerRef.current = null;
         //     }
@@ -125,6 +177,12 @@ const VideoPlayer = ({ videoData }) => {
         }
     }, [currentQuality, videoData]);
 
+    const handleFullscreenToggle = () => {
+        if (screenfull.isEnabled) {
+            screenfull.toggle(videoRef.current);
+            setIsFullscreen(!isFullscreen);
+        }
+    };
 
     // handle play pause
     const handlePlayPause = () => {
@@ -154,7 +212,8 @@ const VideoPlayer = ({ videoData }) => {
 
         // Format seconds to always show two digits (e.g., 05 instead of 5)
         let formattedSeconds = seconds < 10 ? `0${seconds}` : seconds;
-        setCurrentTime(`${minutes} : ${formattedSeconds}`)
+        setCurrentTime(`${minutes} : ${formattedSeconds}`);
+        // setSeekTime(`${minutes} : ${formattedSeconds}`)
     };
 
     // Set the full duration when the video metadata is loaded
@@ -184,25 +243,7 @@ const VideoPlayer = ({ videoData }) => {
 
     useEffect(() => {
 
-        if (player) {
-            // Listen to the event
-            player.on('progress', () => {
-                const buffered = player.bufferedEnd(); // End of the buffer range
-                const duration = player.duration();
-                setVideoLoaded((buffered / duration) * 100); // Buffer as a percentage
-            });
-            player.on('timeupdate', handleTimeUpdate);
-            player.on('loadedmetadata', handleLoadedMetadata);
-            player.on('volumechange', handleVolumeChange);
 
-            // Clean up event listener when component unmounts
-            return () => {
-                player.off('progress');
-                player.off('timeupdate', handleTimeUpdate);
-                player.off('loadedmetadata', handleLoadedMetadata);
-                player.off('volumechange', handleVolumeChange);
-            }
-        };
 
         // return () => {
         //     videoPlayer
@@ -253,6 +294,7 @@ const VideoPlayer = ({ videoData }) => {
 
     const handleVolumeChange = (value) => {
         if (value && typeof value[0] === "number") {
+            // if (value[0] === 0) handleMute();
             const volume = value[0] / 100;
             player.volume(volume);
             setVolume(volume * 100);
@@ -261,25 +303,51 @@ const VideoPlayer = ({ videoData }) => {
 
     const handleMute = () => {
         if (videoRef.current) {
+            const volume = (player.volume() * 100)
             videoRef.current.muted = (!isMute)
+            videoRef.current.muted ? setVolume(0) : setVolume(volume);
             setIsMute(!isMute)
         }
     }
 
+    // Handle hover to calculate seek time
+    const handleSeekTime = (e) => {
+        if (player) {
+            const duration = player.duration();
+            const slider = e.target?.getBoundingClientRect(); // Get slider dimensions
+            const hoverX = e.clientX - slider?.left; // Mouse position relative to the slider
+            const sliderWidth = slider?.width;
+            const time = Math.floor((hoverX / sliderWidth) * duration); // Calculate hover time
+            // const newTime = (value[0] / 100) * duration; // Convert percentage to time
+            const calculatedTime = (time > 0 ? Math.min(time, duration) : 0); // Ensure valid range
+
+            // Get minutes (floor to the nearest integer)
+            let minutes = Math.floor(calculatedTime / 60);
+
+            // Get seconds (remaining after minutes)
+            let seconds = Math.floor(calculatedTime % 60);
+
+            // Format seconds to always show two digits (e.g., 05 instead of 5)
+            let formattedSeconds = seconds < 10 ? `0${seconds}` : seconds;
+            setSeekTime(`${minutes} : ${formattedSeconds}`);
+            setPopupPosition({ x: hoverX, y: -35 }); // Adjust popup position (above slider)
+        }
+    };
 
     return (
-        <div className="relative flex justify-center items-center max-h-[70vh] w-full mx-auto">
+        <div className={`relative flex justify-center items-center max-h-[70vh] w-full !rounded-md mx-auto`}>
             <video
                 ref={videoRef}
-                className="object-fill w-full h-full rounded-md" />
+                controls={false}
+                className="object-fill w-full h-full bg-transparent video-js !vjs-poster" />
 
             {/* VideoPlayer configurations */}
-            <div className="absolute bottom-0 left-0 right-0 h-14 bg-gradient-to-t from-black/50 rounded-b-md to-transparent" />
+            {/* <div className="absolute bottom-0 left-0 right-0 h-14 bg-gradient-to-t from-black/50 rounded-b-md to-transparent" /> */}
             <div
                 onMouseMove={handleMouseMove}
                 className="absolute top-0 bottom-0 left-0 right-0 flex flex-col">
                 <div onClick={handleClick} className="relative flex items-center justify-center flex-grow text-white">
-                    < LoadingCircle className={`${isLoading ? "opacity-100" : "opacity-0"} absolute top-0 bottom-0 left-0 right-0 transition-all duration-500 m-auto w-12 h-12`} />
+                    {isLoading && < LoadingCircle className={`${isLoading ? "opacity-100" : "opacity-0"} absolute top-0 bottom-0 left-0 right-0 transition-all duration-500 m-auto w-12 h-12`} />}
                     {
                         !isMobile &&
                         <span className={`${togglePlayPause && "!opacity-100 !scale-100"} opacity-0 scale-75 transition-all duration-500 flex items-center justify-center p-5 rounded-full bg-black/50`}>
@@ -302,18 +370,45 @@ const VideoPlayer = ({ videoData }) => {
                             }
                         </span>
                     }
+                    {
+                        !track && <RotateCcw />
+                    }
                 </div>
-                <div className={`${showUi ? "opacity-100" : "opacity-0 cursor-none"} h-14 transition-all duration-500 px-8 w-full mx-auto`}>
-                    <div className="left-0 right-0 flex flex-col bottom-5">
+                <div className={`${showUi ? "opacity-100" : "opacity-0 cursor-none"} h-14 flex items-end transition-all font-medium duration-500 px-8 w-full mx-auto`}>
+                    <div className="flex flex-col flex-grow">
+
                         {/* Progress bar */}
-                        <div className="relative bottom-0 flex py-1">
+                        <div className="relative bottom-0 flex items-center justify-center max-sm:py-2">
+
                             {/* Display buffer progress */}
                             <Progress value={videoLoaded} color="bg-white/50"
                                 className="h-1 bg-white/30" />
+
                             {/* Slider for seeking */}
-                            <Slider className="absolute top-0 bottom-0 py-1 bg-transparent" onValueChange={updateProgress} value={[progress]} max={100} step={1} />
+                            <span className="absolute bottom-0 left-0 right-0 group">
+                                <Slider
+                                    onMouseMove={handleSeekTime}
+                                    indicator="bg-red-500" className="bg-transparent max-sm:py-2" onValueChange={updateProgress} value={[progress]} max={100} step={0.1} />
+
+                                {/* Hover popup */}
+                                {seekTime !== null && (
+                                    <div
+                                        className="absolute hidden px-2 py-1 pr-3 text-sm transition-all duration-500 border rounded-md border-accent-foreground/90 text-background bg-accent-foreground/80 backdrop-blur group-hover:block"
+                                        style={{
+                                            left: `${popupPosition.x}px`,
+                                            top: `${popupPosition.y}px`,
+                                            transform: "translateX(-50%)",
+                                        }}
+                                    >
+                                        {seekTime}
+                                    </div>
+                                )}
+                            </span>
                         </div>
-                        <div className="flex items-center w-full gap-3 text-white">
+                        <div className="flex items-center justify-between w-full gap-3 text-white">
+
+                            {/* Left side controls */}
+                            {/* Playback controls */}
                             <div className="flex items-center gap-3">
                                 <span onClick={handlePlayPause} className="cursor-pointer">
                                     {
@@ -323,7 +418,9 @@ const VideoPlayer = ({ videoData }) => {
                                             < Play size={18} className={`${isPlaying && "!opacity-0"} opacity-100 transition-all duration-300`} />
                                     }
                                 </span>
-                                <Input className="p-0 bg-transparent border-none pointer-events-none w-28 max-sm:text-xs disabled:opacity-100" disabled value={`${currentTime} / ${duration}`} />
+                                <Input type="text" className="w-[6rem] text-center p-0 m-0 border-none pointer-events-none bg-transparent max-sm:text-xs disabled:opacity-100" disabled value={`${currentTime} / ${duration}`} />
+
+                                {/* Volume controls */}
                                 <span className="relative flex items-center gap-3 group">
                                     <span onClick={handleMute} className="cursor-pointer">
                                         {
@@ -339,10 +436,18 @@ const VideoPlayer = ({ videoData }) => {
                                                         <Volume2 size={18} />
                                         }
                                     </span>
-                                    <span className="w-20 p-2 transition-all duration-500 bg-white rounded-full opacity-0 group-hover:flex group-hover:opacity-100">
-                                        <Slider className="bg-black" onValueChange={handleVolumeChange} value={[volume]} max={100} step={1} />
+                                    <span className={`${!isMobile ? "group-hover:flex group-hover:opacity-100" : "opacity-100 flex"} hidden opacity-0 w-28 p-1 transition-all duration-500 bg-black rounded-full`}>
+                                        <Slider
+                                            indicator={`!w-[${volume}%] bg-red-500 transition-all duration-200`}
+                                            className="transition-transform duration-200 ease-out transform"
+                                            onValueChange={handleVolumeChange} value={[volume]} max={100} step={0.1} />
                                     </span>
                                 </span>
+                            </div>
+
+                            {/* Right side controls */}
+                            <div>
+                                <Maximize onClick={handleFullscreenToggle} className="cursor-pointer" size={18} />
                             </div>
                         </div>
                     </div>
@@ -360,138 +465,3 @@ VideoPlayer.propTypes = {
 }
 
 export default VideoPlayer
-
-
-
-
-
-// useEffect(() => {
-//     const video = videoRef.current;
-
-//     const part = videoData.videoFile.split("/upload");
-//     const optimizedUrl = part[0] + videoConfiguration[0].config + part[1];
-//     setCurrentQuality(optimizedUrl);
-
-//     handleProgress()
-//     handleLoadedMetadata();
-
-//     // if (video?.duration)
-
-//     // Add event listeners
-//     video?.addEventListener('progress', handleProgress);
-//     video?.addEventListener('LoadedMetadata', handleLoadedMetadata);
-
-//     // Clean up event listeners when component unmounts
-//     return () => {
-//         setDuration(0)
-//         video?.removeEventListener('progress', handleProgress);
-//         video?.removeEventListener('LoadedMetadata', handleLoadedMetadata);
-//     };
-// }, [videoData, video]);
-
-// // update the progressbar
-// const updateProgress = () => {
-//     const progressValue = (video?.currentTime / video?.duration) * 100;
-//     setProgress(progressValue);
-//     handleTimeUpdate();
-// }
-
-// // Set the full duration when the video metadata is loaded
-// const handleLoadedMetadata = () => {
-//     const durationInSeconds = video?.duration
-
-//     // Get minutes (integer part)
-//     const minutes = Math.floor(durationInSeconds / 60);
-
-//     // Get remaining seconds (round to 2 decimal places)
-//     const seconds = (durationInSeconds % 60).toFixed(0);
-
-//     const formattedTime = `${minutes} : ${seconds.padStart(2, '0')}`;
-//     setDuration(formattedTime); // Set the total duration
-// };
-
-
-// const handleProgress = () => {
-//     if (video?.buffered.length > 0) {
-//         const buffered = video.buffered;
-//         const totalBufferedTime = buffered.end(buffered.length - 1); // Last buffered range's end
-//         const duration = video?.duration;
-
-//         // Calculate percentage of video that is buffered
-//         const percentageLoaded = (totalBufferedTime / duration) * 100;
-
-//         setVideoLoaded(percentageLoaded);
-//     }
-// };
-
-// // Update currentTime as the video plays
-// const handleTimeUpdate = () => {
-//     // Get minutes (floor to the nearest integer)
-//     let minutes = Math.floor(video?.currentTime / 60);
-
-//     // Get seconds (remaining after minutes)
-//     let seconds = Math.floor(video?.currentTime % 60);
-
-//     // Format seconds to always show two digits (e.g., 05 instead of 5)
-//     let formattedSeconds = seconds < 10 ? `0${seconds}` : seconds;
-//     setCurrentTime(`${minutes} : ${formattedSeconds}`)
-// };
-
-// // handle play pause
-// const handlePlayPause = () => {
-//     // if paused play
-//     if (video?.paused) {
-//         video.play();
-//         setIsPlaying(true);
-//     } else {
-//         // else pause
-//         video.pause();
-//         setIsPlaying(false);
-//     }
-// }
-
-// // Seek video position
-// const handleSeek = (value) => {
-//     const video = videoRef.current;
-//     const newTime = (value[0] / 100) * video?.duration;
-//     video.currentTime = newTime;
-//     setProgress(value[0])
-// };
-
-// const handleQuality = () => {
-// }
-
-// Remove default control ui of video
-// useEffect(() => {
-//     const video = videoRef.current;
-
-//     if (!video) return;
-
-//     // Ensure controls attribute is removed on mount
-//     video.removeAttribute("controls");
-
-//     // Monitor and prevent controls from being added back
-//     const observer = new MutationObserver(() => {
-//         if (video.hasAttribute("controls")) {
-//             video.removeAttribute("controls");
-//         }
-//     });
-//     observer.observe(video, { attributes: true });
-
-//     // Disable keyboard shortcuts for video playback
-//     const handleKeyDown = (e) => {
-//         const forbiddenKeys = [" ", "ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight"];
-//         if (forbiddenKeys.includes(e.key)) {
-//             e.preventDefault();
-//         }
-//     };
-
-//     document.addEventListener("keydown", handleKeyDown);
-
-//     return () => {
-//         // Cleanup observer and event listener
-//         observer.disconnect();
-//         document.removeEventListener("keydown", handleKeyDown);
-//     };
-// }, []);
-

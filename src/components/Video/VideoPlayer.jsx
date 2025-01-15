@@ -292,7 +292,7 @@ const VideoPlayer = ({ videoData }) => {
                     }
                     {
                         isMobile &&
-                        <span onClick={handlePlayPause} className={`${togglePlayPause && "!opacity-100 !scale-100"} flex items-center justify-center p-5 rounded-full cursor-pointer bg-black /50 backdrop-blur`}>
+                        <span onClick={handlePlayPause} className={`${togglePlayPause && "!opacity-100 !scale-100"} opacity-0 scale-75 transition-all duration-500 flex items-center justify-center p-5 rounded-full cursor-pointer bg-black/40 backdrop-blur`}>
                             {
                                 isPlaying ?
                                     <Pause size={40} className={`${isPlaying && "!opacity-100"} opacity-0 transition-all duration-300`} />

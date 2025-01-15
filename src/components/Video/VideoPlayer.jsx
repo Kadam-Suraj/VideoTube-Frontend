@@ -59,11 +59,11 @@ const VideoPlayer = ({ videoData }) => {
 
         const options = {
             controls: false,
-            autoplay: false,
+            autoplay: true,
             responsive: true,
             controlBar: {
                 playToggle: false, // Removes the play button
-                volumePanel: false, // Removes the volume control
+                // volumePanel: false, // Removes the volume control
                 fullscreenToggle: false, // Removes the fullscreen button
             },
             preload: "auto",
@@ -267,17 +267,18 @@ const VideoPlayer = ({ videoData }) => {
 
 
     return (
-        <div className="container relative flex justify-center items-center aspect-video min-h-80 max-h-[70vh] w-full">
+        <div className="relative flex justify-center items-center max-h-[70vh] w-full mx-auto">
             <video
                 ref={videoRef}
-                className="object-contain w-full h-full rounded-md" />
+                className="object-fill w-full h-full rounded-md" />
 
             {/* VideoPlayer configurations */}
-            <div className="absolute bottom-0 left-0 right-0 h-14 bg-gradient-to-t from-black/50 to-transparent" />
+            <div className="absolute bottom-0 left-0 right-0 h-14 bg-gradient-to-t from-black/50 rounded-b-md to-transparent" />
             <div
                 onMouseMove={handleMouseMove}
                 className="absolute top-0 bottom-0 left-0 right-0 flex flex-col">
-                <div onClick={handleClick} className="flex items-center justify-center flex-grow">
+                <div onClick={handleClick} className="relative flex items-center justify-center flex-grow">
+                    < LoadingCircle className={`${isLoading ? "opacity-100" : "opacity-0"} absolute top-0 bottom-0 left-0 right-0 transition-all duration-500 m-auto w-12 h-12`} />
                     {
                         !isMobile &&
                         <span className={`${togglePlayPause && "!opacity-100 !scale-100"} opacity-0 scale-75 transition-all duration-500 flex items-center justify-center p-5 rounded-full bg-black/50`}>
@@ -291,7 +292,7 @@ const VideoPlayer = ({ videoData }) => {
                     }
                     {
                         isMobile &&
-                        <span onClick={handlePlayPause} className="flex items-center justify-center p-5 rounded-full cursor-pointer bg-black/50 backdrop-blur">
+                        <span onClick={handlePlayPause} className={`${togglePlayPause && "!opacity-100 !scale-100"} flex items-center justify-center p-5 rounded-full cursor-pointer bg-black /50 backdrop-blur`}>
                             {
                                 isPlaying ?
                                     <Pause size={40} className={`${isPlaying && "!opacity-100"} opacity-0 transition-all duration-300`} />
@@ -302,15 +303,14 @@ const VideoPlayer = ({ videoData }) => {
                     }
                 </div>
                 <div className={`${showUi ? "opacity-100" : "opacity-0 cursor-none"} h-14 transition-all duration-500 px-8 w-full mx-auto`}>
-                    < LoadingCircle className={`${isLoading ? "opacity-100" : "opacity-0"} transition-all  duration-500 absolute top-0 bottom-0 self-center w-12 h-12`} />
-                    <div className="left-0 right-0 flex flex-col gap-2 bottom-5">
+                    <div className="left-0 right-0 flex flex-col bottom-5">
                         {/* Progress bar */}
-                        <div className="relative bottom-0">
+                        <div className="relative bottom-0 flex py-1">
                             {/* Display buffer progress */}
                             <Progress value={videoLoaded} color="bg-white/50"
-                                className="bottom-0 h-1 bg-white/30" />
+                                className="h-1 bg-white/30" />
                             {/* Slider for seeking */}
-                            <Slider className="absolute bottom-0 bg-transparent" onValueChange={updateProgress} value={[progress]} max={100} step={1} />
+                            <Slider className="absolute top-0 bottom-0 py-1 bg-transparent" onValueChange={updateProgress} value={[progress]} max={100} step={1} />
                         </div>
                         <div className="flex items-center w-full gap-3 text-white">
                             <div className="flex items-center gap-3">
@@ -347,7 +347,7 @@ const VideoPlayer = ({ videoData }) => {
                     </div>
                 </div>
             </div >
-        </div>
+        </div >
     )
 }
 

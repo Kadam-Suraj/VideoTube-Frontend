@@ -62,10 +62,10 @@ export const AuthProvider = ({ children }) => {
     }
 
     useEffect(() => {
-        if (isLoggedIn) {
+        if (session) {
             user();
         }
-    }, [isLoggedIn]);
+    }, [session]);
 
     return (
         <AuthContext.Provider value={{ isLoggedIn, user, login, logout, loggedInUser, session, setSession }}>

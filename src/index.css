@@ -98,7 +98,7 @@ img {
   pointer-events: none;
 }
 
-.vjs-poster img {
+/* .video-poster img {
   border-radius: 10px !important;
   background-color: var(--background) !important;
   aspect-ratio: 16 / 9 !important;
@@ -107,10 +107,16 @@ img {
   object-fit: cover;
 }
 
-.video-js {
+.video-player {
   border-radius: 10px !important;
   aspect-ratio: 16 / 9 !important;
   height: 100% !important;
   width: 100%;
   object-fit: contain !important;
-}
+} */
+
+.shaka-bottom-controls {
+  color: var(--accent-foreground);
+  display: flex;
+  flex-direction: column-reverse;
+  }

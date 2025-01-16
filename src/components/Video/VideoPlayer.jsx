@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import PropTypes from "prop-types";
 import "../../style/controls.css";
-import shaka from 'shaka-player/dist/shaka-player.ui.js';
+import shaka from 'shaka-player/dist/shaka-player.ui';
 
 const videoConfiguration = [
     {
@@ -52,7 +52,7 @@ const VideoPlayer = ({ videoData }) => {
 
 
     useEffect(() => {
-
+        shaka.polyfill.installAll()
         const player = new shaka.Player(videoRef.current);
 
         const config = {
@@ -77,16 +77,22 @@ const VideoPlayer = ({ videoData }) => {
         const uiConfigurations = {
             controlPanelElements: ['play_pause', 'time_and_duration', 'mute', 'volume', 'spacer', 'picture_in_picture', 'overflow_menu', 'fullscreen'],
             overflowMenuButtons: ['quality', 'playback_rate'],
+            enableTooltips: true,
             seekBarColors: {
-                base: 'rgba(255,255,255,.2)',
-                buffered: 'rgba(255,255,255,.4)',
+                // base: 'rgba(255,255,255,.2)',
+                // buffered: 'rgba(255,255,255,.4)',
                 played: 'rgb(255,0,0)',
-            }
+            },
+            // customContextMenu: true,
+            // contextMenuElements: ['statistics'],
+            // statisticsList: ['width', 'height', 'playTime', 'bufferingTime'],
         }
         const ui = new shaka.ui.Overlay(player, uiContainerRef.current, videoRef.current);
         ui.configure(uiConfigurations)
         const controls = ui.getControls();
         // controls.setEnabled(true);
+        window.player = player;
+        window.ui = ui;
 
         // Load video based on type
         player.load(currentQuality).catch((error) => {
@@ -119,7 +125,7 @@ const VideoPlayer = ({ videoData }) => {
                 <video
                     ref={videoRef}
                     autoPlay
-                    className="object-fill w-full bg-transparent rounded-md shaka-video"
+                    className="object-fill w-full bg-transparent rounded-md video-player video-poster shaka-video"
                 />
             </div>
             <div className="quality-controls">

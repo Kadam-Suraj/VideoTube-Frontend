@@ -495,7 +495,7 @@
     margin: calc((12px - 4px)/ 2) 6px;
     height: 4px;
     border-radius: 4px;
-    background: #fff
+    background: #ff0000
 }
 
 .shaka-volume-bar-container {
@@ -529,13 +529,17 @@
     border: none
 }
 
+.shaka-seek-bar .shaka-range-element .shaka-range-element::-webkit-slider-thumb {
+    background: red !important;
+}
+
 .shaka-range-element::-webkit-slider-thumb {
     -webkit-appearance: none;
     border: none;
     border-radius: 12px;
     height: 12px;
     width: 12px;
-    background: #fff
+    background: white
 }
 
 .shaka-range-element::-moz-range-track {
@@ -840,7 +844,10 @@
     line-height: calc(32px / 2);
     white-space: nowrap;
     font-size: 13px;
-    background: rgba(35, 35, 35, .9);
+    backdrop-filter: blur(10px);
+    z-index: 30;
+    background: rgba(0, 0, 0, 0.459);
+    border: 1px solid rgba(255, 255, 255, 0.562);
     color: #fff;
     border-radius: 3px;
     padding: 5px 10px;
@@ -910,13 +917,15 @@
 }
 
 #shaka-player-ui-time-container {
-    background-color: #fff;
-    border: 1px solid #000;
-    border-radius: 10px;
-    box-shadow: 0 8px 8px 0 #000;
-    color: #000;
+    background-color: #00000081;
+    backdrop-filter: blur(10px);
+    border: 1px solid #ffffff96;
+    border-radius: 5px;
+    /* box-shadow: 0 8px 8px 0 #000; */
+    color: #ffffff;
     overflow: hidden;
-    padding: 1px 7px;
+    padding: 0 5px;
+    top: 0;
     position: absolute;
     visibility: hidden;
     z-index: 1

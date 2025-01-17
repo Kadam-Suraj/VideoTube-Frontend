@@ -1,55 +1,12 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 import PropTypes from "prop-types";
 import "../../style/controls.css";
 import shaka from 'shaka-player/dist/shaka-player.ui';
 
-const videoConfiguration = [
-    {
-        quality: "Auto",
-        config: "/upload/f_auto"
-    },
-    {
-        quality: "360p",
-        config: "/upload/f_auto/h_360"
-    },
-    {
-        quality: "480p",
-        config: "/upload/f_auto/h_480"
-    },
-    {
-        quality: "720p",
-        config: "/upload/f_auto/h_720"
-    },
-    {
-        quality: "1080p",
-        config: "/upload/f_auto/h_1080"
-    }
-];
-
 const VideoPlayer = ({ videoData }) => {
-    const [currentQuality, setCurrentQuality] = useState(videoConfiguration[0].config);
     const videoRef = useRef(null);
     const playerRef = useRef(null);
     const uiContainerRef = useRef(null);
-
-    useEffect(() => {
-        // Ensure videoFile is defined
-        if (!videoData?.videoFile) {
-            console.error("videoData or videoFile is not defined.");
-            return;
-        }
-
-        const part = videoData.videoFile.split("/upload");
-
-        if (part.length < 2) {
-            console.error("Invalid videoFile format.");
-            return;
-        }
-        const optimizedUrl = part[0] + videoConfiguration[0].config + part[1];
-        setCurrentQuality(optimizedUrl);
-
-    }, [videoData])
-
 
     useEffect(() => {
         shaka.polyfill.installAll()
@@ -57,6 +14,7 @@ const VideoPlayer = ({ videoData }) => {
 
         const config = {
             streaming: {
+                lowLatencyMode: true,
                 bufferingGoal: 15, // Set buffer to 15 seconds
             },
         };
@@ -75,8 +33,8 @@ const VideoPlayer = ({ videoData }) => {
         }
 
         const uiConfigurations = {
-            controlPanelElements: ['play_pause', 'time_and_duration', 'mute', 'volume', 'spacer', 'picture_in_picture', 'overflow_menu', 'fullscreen'],
-            overflowMenuButtons: ['quality', 'playback_rate'],
+            controlPanelElements: ['play_pause', 'time_and_duration', 'mute', 'volume', 'spacer', 'quality', 'picture_in_picture', 'overflow_menu', 'fullscreen'],
+            overflowMenuButtons: ['playback_rate'],
             enableTooltips: true,
             seekBarColors: {
                 // base: 'rgba(255,255,255,.2)',
@@ -95,10 +53,34 @@ const VideoPlayer = ({ videoData }) => {
         window.ui = ui;
 
         // Load video based on type
-        player.load(currentQuality).catch((error) => {
+        player.load(videoData.videoFile).catch((error) => {
             console.error('Error playing stream:', error);
         });
         playerRef.current = player
+
+        // Wait until the Shaka Player UI is loaded
+        // player.addEventListener('loaded', () => {
+        //     // Get all resolution buttons in the UI
+        //     const resolutionButtons = document.querySelectorAll('.shaka-resolution-button');
+        //     resolutionButtons.forEach((button) => {
+        //         // Extract the resolution text (e.g., "480p")
+        //         const resolutionText = button.textContent.trim();
+        //         console.log(button.childNodes)
+
+        //         // Add symbols based on the resolution
+        //         if (resolutionText.includes('480p')) {
+        //             button.textContent = `${resolutionText} SD`; // Add "SD" for 480p
+        //         } else if (resolutionText.includes('720p')) {
+        //             button.textContent = `${resolutionText} HD`; // Add "HD" for 720p
+        //         } else if (resolutionText.includes('1080p')) {
+        //             button.textContent = `${resolutionText} FHD`; // Add "FHD" for 1080p
+        //         } else if (resolutionText.includes('1440p')) {
+        //             button.textContent = `${resolutionText} QHD`; // Add "QHD" for 1440p
+        //         } else if (resolutionText.includes('2160p')) {
+        //             button.textContent = `${resolutionText} UHD`; // Add "UHD" for 4K
+        //         }
+        //     });
+        // });
 
         // Cleanup the player on component unmount
         return () => {
@@ -106,40 +88,16 @@ const VideoPlayer = ({ videoData }) => {
             player.destroy();
             playerRef.current = null;
         }
-    }, [currentQuality, videoData]);
-
-    const handleQualityChange = (config) => {
-        const part = videoData.videoFile.split("/upload");
-        if (part.length < 2) {
-            console.error("Invalid videoFile format.");
-            return;
-        }
-
-        const newUrl = part[0] + config + part[1];
-        setCurrentQuality(newUrl);
-    };
+    }, [videoData]);
 
     return (
         <div>
             <div ref={uiContainerRef} className="!rounded-md shaka-ui-container bg-black">
                 <video
                     ref={videoRef}
-                    autoPlay
+                    // autoPlay
                     className="object-fill w-full bg-transparent rounded-md video-player video-poster shaka-video"
                 />
-            </div>
-            <div className="quality-controls">
-                {videoConfiguration.map((item) => {
-                    if (currentQuality.endsWith(".mp4")) return
-                    <button
-                        key={item.quality}
-                        onClick={() => handleQualityChange(item.config)}
-                        className={`btn ${currentQuality.includes(item.config) ? "active" : ""
-                            }`}
-                    >
-                        {item.quality}
-                    </button>
-                })}
             </div>
         </div>
     )

@@ -54,7 +54,7 @@ const ProfileMenu = () => {
         <DropdownMenu open={open} onOpenChange={setOpen}>
             <DropdownMenuTrigger className="relative flex items-center justify-center rounded-full focus:outline-none">
                 {loggedInUser ?
-                    <Avatar url={loggedInUser?.avatar} />
+                    <Avatar url={loggedInUser.avatar} />
                     :
                     <LoadingCircle />
                 }

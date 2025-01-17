@@ -959,3 +959,30 @@
     word-wrap: normal;
     direction: ltr
 }
+
+.shaka-resolution-button .material-icons-round {
+    visibility: hidden;
+    /* Hides the original content */
+    width: 1.1em;
+}
+
+.shaka-resolution-button .material-icons-round::before {
+    content: 'hd';
+    visibility: visible;
+    /* Makes your custom content visible */
+}
+
+.shaka-back-to-overflow-button i {
+    padding: 0 1em 0 0;
+}
+
+.shaka-overflow-menu-button {
+    visibility: hidden;
+    /* margin: 0 2px 0 2px; */
+    width: 1.2em;
+}
+
+.shaka-overflow-menu-button::before {
+    content: 'settings';
+    visibility: visible;
+}

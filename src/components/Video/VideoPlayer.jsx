@@ -95,7 +95,7 @@ const VideoPlayer = ({ videoData }) => {
             <div ref={uiContainerRef} className="!rounded-md shaka-ui-container bg-black">
                 <video
                     ref={videoRef}
-                    // autoPlay
+                    autoPlay
                     className="object-fill w-full bg-transparent rounded-md video-player video-poster shaka-video"
                 />
             </div>

@@ -57,7 +57,7 @@ const VideoCard = ({ item, type, className, history }) => {
                     >
                         <span className="flex items-center gap-2">
                             {/* Clickable Title */}
-                            <h4 className="font-semibold leading-6 w-fit text-ellipsis line-clamp-2">
+                            <h4 className="w-full font-semibold leading-6 text-ellipsis line-clamp-2">
                                 {item.title || "Untitled"}
                             </h4>
                             {/* Non-clickable area */}

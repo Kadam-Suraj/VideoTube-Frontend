@@ -9,12 +9,12 @@ import PropTypes from "prop-types"
 
 const VideoActions = ({ videoId }) => {
     return (
-        <div className="h-6">
+        <div className="h-6 prevent-link">
             <Popover >
                 <PopoverTrigger>
                     <EllipsisVertical />
                 </PopoverTrigger>
-                <PopoverContent className="p-1 w-fit">
+                <PopoverContent className="p-1 w-fit prevent-link">
                     <div className="p-2 rounded-md hover:bg-accent">
                         <AddToPlaylist value={"Add to playlist"} videoId={videoId} />
                     </div>

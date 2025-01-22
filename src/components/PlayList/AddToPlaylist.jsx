@@ -89,7 +89,7 @@ const AddToPlaylist = ({ videoId, className, value }) => {
                         {value}
                     </span>
                 </DialogTrigger>
-                <DialogContent className="!min-w-60 w-fit min-h-40 px-4">
+                <DialogContent className="!min-w-60 w-fit min-h-40 px-4 prevent-link">
                     <DialogHeader>
                         <DialogTitle>Save video to...</DialogTitle>
                     </DialogHeader>

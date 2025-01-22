@@ -77,10 +77,10 @@ const CreatePlaylist = ({ fnc, videoRequired = true }) => {
     return (
         <div>
             <Dialog open={open} onOpenChange={(open) => setOpen(open)}>
-                <DialogTrigger className="flex gap-3 items-center px-4 py-2 font-medium rounded-full bg-accent-foreground text-background">
+                <DialogTrigger className="flex items-center gap-3 px-4 py-2 font-medium rounded-full bg-accent-foreground text-background">
                     New <FolderPlus />
                 </DialogTrigger>
-                <DialogContent>
+                <DialogContent className="prevent-link">
                     <DialogHeader>
                         <DialogTitle>Create a new Playlist</DialogTitle>
                     </DialogHeader>
@@ -118,11 +118,11 @@ const CreatePlaylist = ({ fnc, videoRequired = true }) => {
                             />
                             {
                                 videoRequired &&
-                                <div className="flex justify-between items-end space-x-4">
-                                    <div className="flex flex-col gap-2 items-start">
+                                <div className="flex items-end justify-between space-x-4">
+                                    <div className="flex flex-col items-start gap-2">
                                         <Label>Videos</Label>
                                         <span className="text-sm text-muted-foreground">Choose a existing video to add to this playlist</span>
-                                        <div className="flex gap-2 justify-between items-center w-full">
+                                        <div className="flex items-center justify-between w-full gap-2">
                                             <Dialog>
                                                 <DialogTrigger className="px-4 py-2 text-sm font-medium rounded-full bg-foreground text-background">
                                                     Add videos

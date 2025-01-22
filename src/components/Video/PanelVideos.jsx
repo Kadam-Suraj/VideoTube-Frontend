@@ -28,7 +28,7 @@ const PanelVideos = ({ id, className }) => {
 
 
     return (
-        <div className={`${className} flex flex-col items-center min-h-[50%]`}>
+        <div className={`${className} flex flex-col items-center`}>
             {
                 isLoading ?
                     <div className="mt-10">
@@ -36,7 +36,7 @@ const PanelVideos = ({ id, className }) => {
                     </div>
                     :
                     videos && videos?.docs.length > 0 ?
-                        <div className="grid space-y-2">
+                        <div className="grid gap-2 space-y-1">
                             {videos.docs.map((item, key) =>
                                 < VideoCard key={key} item={item} type="panel" />
                             )

@@ -17,7 +17,7 @@ const Layout = () => {
                     <div className="absolute top-0 left-0 z-10 hidden h-full sm:block">
                         <SideBar />
                     </div>
-                    <div className="flex flex-col flex-grow w-full h-full p-2 pb-20 overflow-x-auto overflow-y-scroll sm:ml-14">
+                    <div className="flex flex-col flex-grow w-full h-full p-2 overflow-x-auto overflow-y-scroll sm:ml-14 max-sm:pb-20">
                         <Outlet />
                     </div>
                 </div>

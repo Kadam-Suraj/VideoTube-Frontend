@@ -9,10 +9,10 @@ import PropTypes from "prop-types"
 
 const VideoActions = ({ videoId }) => {
     return (
-        <div>
-            <Popover>
+        <div className="h-6">
+            <Popover >
                 <PopoverTrigger>
-                    <EllipsisVertical className="text-accent-foreground/80" />
+                    <EllipsisVertical />
                 </PopoverTrigger>
                 <PopoverContent className="p-1 w-fit">
                     <div className="p-2 rounded-md hover:bg-accent">

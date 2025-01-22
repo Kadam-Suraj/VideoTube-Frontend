@@ -15,6 +15,7 @@ import Video from './pages/Video'
 import User from './pages/User'
 import SearchResults from './pages/SearchResults'
 import Error from './pages/Error'
+import WatchHistory from './pages/WatchHistory'
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -37,14 +38,14 @@ const router = createBrowserRouter(
           <Dashboard />
         </ProtectedRoute>
       } />
+      <Route path="/history" element={
+        <ProtectedRoute>
+          <WatchHistory />
+        </ProtectedRoute>
+      } />
 
       {/* temp routes until development completes */}
       <Route path="/collections" element={
-        <ProtectedRoute>
-          <Error code={503} />
-        </ProtectedRoute>
-      } />
-      <Route path="/history" element={
         <ProtectedRoute>
           <Error code={503} />
         </ProtectedRoute>

@@ -12,6 +12,7 @@ import Subscribe from "../User/Subscribe";
 import UserInfo from "../User/UserInfo";
 import AddToPlaylist from "../PlayList/AddToPlaylist";
 import VideoPlayer from "./VideoPlayer";
+import { addVideoToHistory } from "@/api/watchHistory";
 
 const VideoById = ({ id, className }) => {
 
@@ -23,6 +24,7 @@ const VideoById = ({ id, className }) => {
         const response = await getVideoById(id);
         if (response.data.success) {
             setVideo(response.data.data);
+            await addVideoToHistory(id);
         }
         setIsLoading(false);
     }
@@ -36,7 +38,6 @@ const VideoById = ({ id, className }) => {
 
         return () => {
             // setVideo(null);
-            window.scrollTo(0, 0);
         }
     }, [id]);
 

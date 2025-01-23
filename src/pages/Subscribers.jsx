@@ -15,8 +15,8 @@ const Subscribers = () => {
         const response = await getSubscribers();
         if (response.success) {
             setData(response.data);
-            setIsLoading(false);
         }
+        setIsLoading(false);
     }
 
     useEffect(() => {

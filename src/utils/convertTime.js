@@ -21,7 +21,7 @@ export function timeAgo(timestamp) {
     const differenceInSeconds = Math.floor((now - past) / 1000);
 
     if (differenceInSeconds < 60) {
-        return `${differenceInSeconds} seconds ago`;
+        return `Recently`;
     }
 
     const differenceInMinutes = Math.floor(differenceInSeconds / 60);

@@ -1,4 +1,4 @@
-import { CircleHelp, FolderClosed, History, House, PanelsTopLeft, Settings, UserRoundCheck } from "lucide-react"
+import { FolderClosed, History, House, Info, PanelsTopLeft, Settings, UserRoundCheck } from "lucide-react"
 import { useEffect, useRef, useState } from "react"
 import { NavLink } from "react-router-dom";
 
@@ -30,9 +30,9 @@ const SideBar = () => {
 
     const newMenuOptions = [
         {
-            ele: <CircleHelp />,
-            name: "Support",
-            link: "/support"
+            ele: <Info />,
+            name: "About",
+            link: "/about"
         },
         {
             ele: <Settings />,

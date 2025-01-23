@@ -32,12 +32,12 @@ const VideoById = ({ id, className }) => {
     useEffect(() => {
         setTimeout(async () => {
             await updateVideoViews(id);
-        }, 60000);
+        }, 60000); // update views after 1min
 
         user();
 
         return () => {
-            // setVideo(null);
+            setVideo(null);
         }
     }, [id]);
 

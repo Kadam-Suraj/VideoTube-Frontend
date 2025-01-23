@@ -9,8 +9,11 @@ const VideoPlayer = ({ videoData }) => {
     const uiContainerRef = useRef(null);
 
     useEffect(() => {
-        shaka.polyfill.installAll()
-        const player = new shaka.Player(videoRef.current);
+        // Install Shaka polyfills for compatibility with older browsers
+        shaka.polyfill.installAll();
+
+        // Initialize the player
+        const player = new shaka.Player();
 
         const config = {
             streaming: {
@@ -32,63 +35,58 @@ const VideoPlayer = ({ videoData }) => {
             return;
         }
 
+        // UI configuration
         const uiConfigurations = {
             controlPanelElements: ['play_pause', 'time_and_duration', 'mute', 'volume', 'spacer', 'quality', 'picture_in_picture', 'overflow_menu', 'fullscreen'],
             overflowMenuButtons: ['playback_rate'],
             enableTooltips: true,
             seekBarColors: {
-                // base: 'rgba(255,255,255,.2)',
-                // buffered: 'rgba(255,255,255,.4)',
-                played: 'rgb(255,0,0)',
+                played: 'rgb(255,0,0)', // Custom seek bar color
             },
-            // customContextMenu: true,
-            // contextMenuElements: ['statistics'],
-            // statisticsList: ['width', 'height', 'playTime', 'bufferingTime'],
-        }
+        };
+
+        // Create a UI overlay for the player
         const ui = new shaka.ui.Overlay(player, uiContainerRef.current, videoRef.current);
-        ui.configure(uiConfigurations)
+        ui.configure(uiConfigurations);
         const controls = ui.getControls();
-        // controls.setEnabled(true);
         window.player = player;
         window.ui = ui;
 
-        // Load video based on type
-        player.load(videoData.videoFile).catch((error) => {
-            console.error('Error playing stream:', error);
-        });
-        playerRef.current = player
+        // Attach the player to the media element (video element)
+        player.attach(videoRef.current);
 
-        // Wait until the Shaka Player UI is loaded
-        // player.addEventListener('loaded', () => {
-        //     // Get all resolution buttons in the UI
-        //     const resolutionButtons = document.querySelectorAll('.shaka-resolution-button');
-        //     resolutionButtons.forEach((button) => {
-        //         // Extract the resolution text (e.g., "480p")
-        //         const resolutionText = button.textContent.trim();
-        //         console.log(button.childNodes)
+        // Function to load video with retry logic
+        const loadVideoWithRetry = (videoUrl, retries = 3) => {
+            player.load(videoUrl)
+                .then(() => {
+                    console.log('Video loaded successfully');
+                })
+                .catch((error) => {
+                    console.error('Error loading video:', error);
+                    if (retries > 0) {
+                        console.log(`Retrying... (${3 - retries + 1})`);
+                        loadVideoWithRetry(videoUrl, retries - 1);
+                    } else {
+                        console.error('Failed to load video after multiple attempts.');
+                    }
+                });
+        };
 
-        //         // Add symbols based on the resolution
-        //         if (resolutionText.includes('480p')) {
-        //             button.textContent = `${resolutionText} SD`; // Add "SD" for 480p
-        //         } else if (resolutionText.includes('720p')) {
-        //             button.textContent = `${resolutionText} HD`; // Add "HD" for 720p
-        //         } else if (resolutionText.includes('1080p')) {
-        //             button.textContent = `${resolutionText} FHD`; // Add "FHD" for 1080p
-        //         } else if (resolutionText.includes('1440p')) {
-        //             button.textContent = `${resolutionText} QHD`; // Add "QHD" for 1440p
-        //         } else if (resolutionText.includes('2160p')) {
-        //             button.textContent = `${resolutionText} UHD`; // Add "UHD" for 4K
-        //         }
-        //     });
-        // });
+        // Load video based on type, with retry
+        loadVideoWithRetry(videoData.videoFile);
 
-        // Cleanup the player on component unmount
+        playerRef.current = player;
+
+        // Cleanup: Destroy controls and player on component unmount
         return () => {
-            controls.destroy();
+            // Destroy UI controls and player to free up resources
+            if (controls) controls.destroy();
             player.destroy();
             playerRef.current = null;
-        }
-    }, [videoData]);
+        };
+    }, [videoData]);  // This will run on every videoData change
+
+
 
     return (
         <div>

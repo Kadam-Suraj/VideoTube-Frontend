@@ -87,11 +87,17 @@
 }
 
 ::-webkit-scrollbar {
-  width: 0px;
+  width: 1px;
 }
 
-::-webkit-scrollbar-thumb {
-  background-color: rgba(150, 150, 150, 0.432);
+:root ::-webkit-scrollbar-thumb {
+  border-radius: 50px;
+  background-color: rgb(217, 224, 235);
+}
+
+.dark ::-webkit-scrollbar-thumb {
+  background-color: rgb(36, 46, 59);
+  /* Dark mode thumb color */
 }
 
 img {

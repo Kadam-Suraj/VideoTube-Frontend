@@ -14,15 +14,15 @@ export const getSubscriptions = async (id) => {
     }
 };
 
-export const getSubscribers = async (id) => {
+export const getSubscribers = async () => {
     try {
-        const response = await axios.get(`/api/v1/subscriptions/u/${id}`, {
+        const response = await axios.get(`/api/v1/subscriptions/u/`, {
             options
         });
-        return response;
+        return response.data;
 
     } catch (error) {
         console.error(error);
-        return error.response
+        return error.response.data
     }
 };

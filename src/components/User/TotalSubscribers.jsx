@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 
 const TotalSubscribers = ({ count }) => {
     return (
-        <span className="opacity-50 dark:text-gray-300 dark:opacity-80">
+        <span className="text-muted-foreground">
             {countFormat(count)} {count !== 1 ? "Subscribers" : "Subscriber"}
         </span>
     )

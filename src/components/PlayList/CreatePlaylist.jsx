@@ -20,7 +20,7 @@ import AddVideos from "./AddVideos"
 import { useState } from "react"
 import { createPlaylist } from "@/api/playlist"
 import { useToast } from "@/hooks/use-toast"
-
+import PropTypes from "prop-types"
 
 const CreatePlaylist = ({ fnc, videoRequired = true }) => {
     const [videos, setVideos] = useState([]);
@@ -155,6 +155,11 @@ const CreatePlaylist = ({ fnc, videoRequired = true }) => {
             </Dialog>
         </div >
     )
+}
+
+CreatePlaylist.propTypes = {
+    fnc: PropTypes.func,
+    videoRequired: PropTypes.bool
 }
 
 export default CreatePlaylist

@@ -1,6 +1,6 @@
 import PropTypes from "prop-types"
 import { EllipsisVertical } from "lucide-react"
-import { useEffect, useState } from "react"
+import { useState } from "react"
 import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover"
 import DeleteContent from "../Content/DeleteContent"
 import { DropdownMenuSeparator } from "../ui/dropdown-menu"
@@ -14,8 +14,13 @@ const PlaylistActions = ({ className, data, fnc, api, type }) => {
                 <PopoverTrigger>
                     <EllipsisVertical className="cursor-pointer" size={20} />
                 </PopoverTrigger>
-                <PopoverContent className="max-w-40">
-                    <DeleteContent type={type} api={api} fnc={fnc} id={data._id} open={setOpen} />
+                <PopoverContent className="p-3 max-w-40 prevent-link">
+                    {
+                        (data?.name === 'Watch Later' || data?.name === 'Liked videos') ?
+                            <ClearList id={data._id} func={fnc} />
+                            :
+                            <DeleteContent type={type} api={api} fnc={fnc} id={data._id} open={setOpen} />
+                    }
                     <DropdownMenuSeparator />
                     <EditPlaylist data={data} setState={setOpen} fnc={fnc} />
                 </PopoverContent>
@@ -27,6 +32,7 @@ const PlaylistActions = ({ className, data, fnc, api, type }) => {
 PlaylistActions.propTypes = {
     data: PropTypes.shape({
         _id: PropTypes.string,
+        name: PropTypes.string
     }),
     className: PropTypes.string,
     fnc: PropTypes.func,
@@ -62,6 +68,7 @@ import { Textarea } from "../ui/textarea"
 import { updatePlaylist } from "@/api/playlist"
 import { useToast } from "@/hooks/use-toast"
 import PlaylistVisibility from "./PlaylistVisibility"
+import ClearList from "./ClearList"
 
 const EditPlaylist = ({ data, setState, fnc }) => {
     const [open, setOpen] = useState(false);
@@ -103,17 +110,16 @@ const EditPlaylist = ({ data, setState, fnc }) => {
         }
     }
 
-
     return (
         <div>
             <Dialog open={open} onOpenChange={(open) => setOpen(open)}>
                 <DialogTrigger className="w-full text-start">Edit</DialogTrigger>
-                <DialogContent>
+                <DialogContent className="prevent-link">
                     <DialogHeader>
                         <DialogTitle>Update Playlist</DialogTitle>
                         <DialogDescription />
                     </DialogHeader>
-                    <img src={data?.video?.thumbnail} alt="thumbnail" />
+                    <img src={data?.video?.thumbnail} alt="thumbnail" className="object-cover rounded-md aspect-video" />
                     <Form {...form}>
                         <form onSubmit={form.handleSubmit(onSubmit)} className="grid space-y-8">
                             <FormField
@@ -143,7 +149,7 @@ const EditPlaylist = ({ data, setState, fnc }) => {
                                 )}
                             />
                             <PlaylistVisibility fnc={fnc} playlist={data} />
-                            <Button className="justify-self-end select-none" disabled={(data?.name === form.getValues().name && data?.description === form.getValues().description)} type="submit">Submit</Button>
+                            <Button className="select-none justify-self-end" disabled={(data?.name === form.getValues().name && data?.description === form.getValues().description)} type="submit">Submit</Button>
                         </form>
                     </Form>
                 </DialogContent>
@@ -151,6 +157,12 @@ const EditPlaylist = ({ data, setState, fnc }) => {
 
         </div>
     )
+}
+
+EditPlaylist.propTypes = {
+    data: PropTypes.object,
+    setState: PropTypes.func,
+    fnc: PropTypes.func
 }
 
 export { PlaylistActions, EditPlaylist }

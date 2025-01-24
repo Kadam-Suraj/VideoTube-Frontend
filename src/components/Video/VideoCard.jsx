@@ -7,6 +7,7 @@ import { timeAgo } from "@/utils/convertTime";
 import countFormat from "@/utils/countFormat";
 import VideoActions from "./VideoActions";
 import RemoveFromWatchHistory from "../User/RemoveFromWatchHistory";
+import Image from "../Image";
 
 const VideoCardLayout = ({ videos }) => {
     return (
@@ -30,11 +31,7 @@ const VideoCard = ({ item, type, className, history }) => {
             <div className={`flex justify-between gap-1 h-full rounded-md cursor-pointer max-[363px]:flex-col ${type === "panel" ? "flex-row md:flex-col xl:flex-row" : "flex-col"}`}>
                 <div className="flex-1 rounded-md sm:hover:scale-[1.03] transition-all duration-300 sm:hover:shadow-lg">
                     <NavLink to={`/watch?v=${item._id}`} className="relative h-full shrink">
-                        <img
-                            src={item.thumbnail || "default-thumbnail.jpg"}
-                            alt={item.title || "Thumbnail"}
-                            className="object-cover w-full h-full rounded-md aspect-video"
-                        />
+                        <Image url={item.thumbnail} alt={item.title} />
                         <Badge
                             variant="none"
                             className="absolute text-black bg-white right-2 bottom-2"

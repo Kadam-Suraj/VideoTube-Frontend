@@ -6,8 +6,11 @@ import { useEffect, useState } from "react";
 import { deletePlaylist, getCreatedPlaylists } from "@/api/playlist";
 import CreatePlaylist from "./CreatePlaylist";
 import { NavLink } from "react-router-dom";
-import { Card } from "../ui/card";
+import { Card, CardContent, CardFooter } from "../ui/card";
 import { PlaylistActions } from "./PlaylistActions";
+import VideoCount from "../Video/VideoCount";
+import PropTypes from "prop-types";
+import Image from "../Image";
 
 const PlayList = ({ user }) => {
     const { loggedInUser } = useAuth();
@@ -44,7 +47,7 @@ const PlayList = ({ user }) => {
                             {
                                 playlists?.docs.length > 0 ?
                                     <div className="grid gap-4">
-                                        <h3 className="text-lg font-medium">Created playlists</h3>
+                                        <h3 className="text-2xl font-medium">Playlists</h3>
                                         <div className="grid w-full gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
                                             {
                                                 playlists?.docs.map((item, idx) => {
@@ -54,9 +57,15 @@ const PlayList = ({ user }) => {
                                             }
                                         </div>
                                     </div> :
-                                    < NoContent type="playlist">
-                                        <ListVideo size={40} />
-                                    </NoContent >
+                                    <span className="flex flex-col items-center gap-4">
+                                        < NoContent type="playlist">
+                                            <ListVideo size={40} />
+                                        </NoContent >
+                                        {
+                                            loggedInUser.username === user.username &&
+                                            <span className="text-muted-foreground">Shows playlists with privacy public</span>
+                                        }
+                                    </span>
                             }
                         </div>
                     </div>
@@ -65,42 +74,51 @@ const PlayList = ({ user }) => {
     )
 }
 
+PlayList.propTypes = {
+    user: PropTypes.object
+}
+
 const PlayListCard = ({ item, fetchPlaylists }) => {
     const { loggedInUser } = useAuth();
 
     return (
-        <Card className="mx-auto shrink min-h[20.5rem] min-w[22.5rem] p-0 border-none">
-            <div className={`grid gap-1 justify-between rounded-md group`}>
+        <Card className="mx-auto shrink min-h[20.5rem] min-w[22.5rem] p-0">
+            <CardContent className="p-0">
                 < NavLink to={`/watch?v=${item.video._id}&playlist=${item._id}`} >
                     <div className="relative flex-1 transition-all duration-300 rounded-md sm:hover:scale-105 sm:hover:shadow-lg">
-                        <img
-                            src={item.video.thumbnail || ""}
-                            alt={item.name || "Thumbnail"}
-                            className="object-cover w-full rounded-md aspect-video"
-                        />
-                        <div className="flex absolute right-2 bottom-2 gap-1 items-center px-2 py-1 rounded-md text-foreground bg-background/75 backdrop-blur-[3px]">
-                            <ListVideo size={20} />
-                            <span className="text-sm">{item.totalVideos} {item.totalVideos === 1 ? "video" : "videos"}</span>
-                        </div>
+                        <Image url={item?.video?.thumbnail} alt={item?.video?.title} />
+                        <VideoCount count={item.totalVideos} />
                     </div>
                 </NavLink>
-                <div className="relative flex items-center justify-between">
-                    <NavLink to={`/watch?v=${item.video._id}&playlist=${item._id}`} >
-                        <div className="flex flex-col flex-1 w-full gap-1 p-2">
-                            <h4 className="w-full font-semibold leading-6 text-ellipsis line-clamp-2">
-                                {item.name || "Untitled"}
-                            </h4>
-                            <span className="text-sm text-primary/50">View full playlist</span>
-                        </div>
-                    </NavLink >
+            </CardContent>
+            <CardFooter className="p-2 pr-0">
+                <NavLink to={`/watch?v=${item.video._id}&playlist=${item._id}`} className="flex items-center justify-between w-full"
+                    onClick={(e) => {
+                        // Prevent navigation if the click originated from the buttons inside this section
+                        if (e.target.closest(".prevent-link")) {
+                            e.preventDefault();
+                        }
+                    }}
+                >
+                    <div className="flex flex-col w-full gap-1">
+                        <h4 className="w-full font-semibold leading-6 text-ellipsis line-clamp-2">
+                            {item.name || "Untitled"}
+                        </h4>
+                        <span className="text-sm text-primary/50">View full playlist</span>
+                    </div>
                     {
-                        loggedInUser?._id === item?.owner?._id &&
-                        <PlaylistActions data={item} type="playlist" api={deletePlaylist} fnc={fetchPlaylists} />
+                        (loggedInUser?._id === item?.owner?._id || loggedInUser?._id === item?.owner) &&
+                        <PlaylistActions className="p-2 pb-0 border border-r-0 rounded-md rounded-r-none bg-accent prevent-link" data={item} type="playlist" api={deletePlaylist} fnc={fetchPlaylists} />
                     }
-                </div>
-            </div>
+                </NavLink >
+            </CardFooter>
         </Card >
     )
+}
+
+PlayListCard.propTypes = {
+    item: PropTypes.object,
+    fetchPlaylists: PropTypes.func
 }
 
 export { PlayList, PlayListCard }

@@ -79,6 +79,8 @@ const ManageVideos = () => {
         user();
     }, []);
 
+    console.log(loggedInUser)
+
     const memoizedUser = useMemo(() => loggedInUser, [loggedInUser]);
 
     return (

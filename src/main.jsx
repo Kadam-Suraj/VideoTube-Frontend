@@ -17,6 +17,7 @@ import SearchResults from './pages/SearchResults'
 import Error from './pages/Error'
 import WatchHistory from './pages/WatchHistory'
 import Subscribers from './pages/Subscribers'
+import Collections from './pages/Collections'
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -44,6 +45,11 @@ const router = createBrowserRouter(
           <WatchHistory />
         </ProtectedRoute>
       } />
+      <Route path="/collections" element={
+        <ProtectedRoute>
+          <Collections />
+        </ProtectedRoute>
+      } />
       <Route path="/subscribers" element={
         <ProtectedRoute>
           <Subscribers />
@@ -51,11 +57,6 @@ const router = createBrowserRouter(
       } />
 
       {/* temp routes until development completes */}
-      <Route path="/collections" element={
-        <ProtectedRoute>
-          <Error code={503} />
-        </ProtectedRoute>
-      } />
       <Route path="/about" element={
         <ProtectedRoute>
           <Error code={503} />

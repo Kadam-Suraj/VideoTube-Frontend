@@ -40,15 +40,15 @@ const DeleteContent = ({ id, fnc, api, type, open }) => {
                 <PopoverTrigger className="w-full text-left">
                     Delete
                 </PopoverTrigger>
-                <PopoverContent className="flex gap-2 items-center px-2 py-0 w-fit">
-                    <Alert className="space-x-2 w-96 border-none">
+                <PopoverContent className="flex flex-col items-center gap-2 px-2 py-0 pb-2 sm:flex-row prevent-link">
+                    <Alert className="space-x-2 border-none prevent-link">
                         <AlertTriangle />
-                        <AlertTitle>Confirm deletion</AlertTitle>
+                        <AlertTitle>Confirm deletion !</AlertTitle>
                         <AlertDescription className="text-accent-foreground/80">
                             This action cannot be undone.
                         </AlertDescription>
                     </Alert>
-                    <Button variant="destructive"
+                    <Button variant="destructive" className="self-end"
                         onClick={handleDelete}>
                         Delete
                     </Button>

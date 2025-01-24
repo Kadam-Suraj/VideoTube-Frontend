@@ -59,7 +59,7 @@ export function timeAgo(timestamp) {
         return "1 week ago";
     }
 
-    if (differenceInWeeks < 4) {
+    if (differenceInWeeks < 4.5) {
         return `${differenceInWeeks} weeks ago`;
     }
 

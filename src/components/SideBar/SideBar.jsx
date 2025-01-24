@@ -58,7 +58,7 @@ const SideBar = () => {
     }, []);
 
     return (
-        <aside ref={sideBarRef} className={`flex flex-col items-start h-full bg-background/80 backdrop-blur group space-y-8 p-4 border-r transition-all duration-500 ${isSideBarOpen ? "w-60" : "w-14"} hover:w-60 gap-3 overflow-hidden`}>
+        <aside ref={sideBarRef} className={`flex flex-col items-start h-full bg-background/80 backdrop-blur group space-y-8 p-4 border-r transition-[width] duration-500 ${isSideBarOpen ? "w-60" : "w-14"} hover:w-60 gap-3 overflow-hidden`}>
             <PanelsTopLeft onClick={() => setIsSideBarOpen(!isSideBarOpen)} className={`cursor-pointer transition-all duration-500 opacity-50 group-hover:opacity-100 ${isSideBarOpen && "opacity-100"}`} />
             <div className="flex flex-col justify-between h-full gap-5">
                 <div className="flex flex-col gap-5">
@@ -83,7 +83,7 @@ const SideBar = () => {
 import PropTypes from "prop-types"
 const MenuOptionsPanel = ({ item }) => {
     return (
-        <NavLink to={item.link} className={({ isActive }) => `${isActive && "opacity-100"} opacity-50 hover:opacity-100 transition-all duration-200 flex items-center gap-5`}>
+        <NavLink to={item.link} className={({ isActive }) => `${isActive && "!opacity-100"} opacity-50 hover:opacity-100 transition-all duration-200 flex items-center gap-5`}>
             {item.ele}
             <span className="font-semibold ">
                 {item.name}

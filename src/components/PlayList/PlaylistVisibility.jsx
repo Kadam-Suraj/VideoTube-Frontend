@@ -23,7 +23,7 @@ const PlaylistVisibility = ({ playlist, fnc }) => {
             fnc();
 
             toast({
-                title: `Privacy updated to ${response?.data?.isPublic ? "Public" : "Private"}`,
+                title: `${response?.data?.name} set to ${response?.data?.isPublic ? "Public" : "Private"}`,
             })
         } else {
             console.error("Failed to update visibility", response.message);
@@ -34,6 +34,8 @@ const PlaylistVisibility = ({ playlist, fnc }) => {
         const isPublic = value === "public";
         toggleVisibility(isPublic);
     };
+
+    console.log(playlist)
 
     return (
         <div className="flex flex-col space-y-1">

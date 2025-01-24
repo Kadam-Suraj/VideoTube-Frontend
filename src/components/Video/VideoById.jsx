@@ -13,6 +13,7 @@ import UserInfo from "../User/UserInfo";
 import AddToPlaylist from "../PlayList/AddToPlaylist";
 import VideoPlayer from "./VideoPlayer";
 import { addVideoToHistory } from "@/api/watchHistory";
+import AddToWatchLater from "../PlayList/AddToWatchLater";
 
 const VideoById = ({ id, className }) => {
 
@@ -60,15 +61,18 @@ const VideoById = ({ id, className }) => {
                                 < VideoPlayer videoData={video} />
                             }
                             <h2 className="text-xl font-medium text-wrap text-ellipsis line-clamp-4">{video.title}</h2>
-                            <div className="flex items-center justify-between">
-                                <span className="flex flex-wrap items-center w-full gap-3 space-y-4">
+                            <div className="flex flex-wrap items-center justify-between gap-3">
+                                {/* <span className="flex flex-wrap items-center w-full gap-3 space-y-4">
+                                </span> */}
+                                <div className="flex items-center gap-2">
                                     <UserInfo channel={video?.owner} />
                                     <Subscribe fnc={user} owner={video?.owner} />
-                                    <div className="flex items-center justify-between flex-1 space-x-5">
-                                        <LikeVideo id={video._id} likes={video.totalLikes} fnc={user} isLiked={video.isLiked} />
-                                        <AddToPlaylist videoId={video._id} />
-                                    </div>
-                                </span>
+                                    <LikeVideo id={video._id} likes={video.totalLikes} fnc={user} isLiked={video.isLiked} />
+                                </div>
+                                <div className="flex items-center justify-between space-x-5">
+                                    <AddToWatchLater id={video._id} />
+                                    <AddToPlaylist videoId={video._id} />
+                                </div>
                             </div>
                             <div className="relative px-3 py-2 font-medium transition-all duration-700 rounded-xl bg-accent-foreground/10">
                                 <div className="space-x-5">

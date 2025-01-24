@@ -1,3 +1,4 @@
+import { updateLikedVideos } from "@/api/playlist"
 import { likeVideo } from "@/api/video.api"
 import countFormat from "@/utils/countFormat"
 import { ThumbsUp } from "lucide-react"
@@ -7,6 +8,7 @@ const LikeVideo = ({ id, likes, fnc, isLiked }) => {
 
     const like = async () => {
         const response = await likeVideo(id);
+        await updateLikedVideos(id);
         if (response.data.success) {
             fnc();
         }

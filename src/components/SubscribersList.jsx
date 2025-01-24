@@ -16,7 +16,7 @@ const SubscribersList = ({ item }) => {
                         <span className="text-muted-foreground">@{item?.username}</span>
                         <TotalSubscribers count={item?.totalSubscribers} />
                     </div>
-                    <p className="text-accent-foreground/70 line-clamp-2">{item?.description}</p>
+                    <p className="text-sm text-accent-foreground/70 line-clamp-2">{item?.description}</p>
                 </div>
             </NavLink>
             <Subscribe owner={item} className="justify-self-end text-end min-w-36" />

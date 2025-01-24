@@ -131,6 +131,20 @@ export const addVideoFromPlaylist = async (videoId, playlistId) => {
     }
 };
 
+const updateLikedVideos = async (id) => {
+    try {
+        const response = await axios.post(`/api/v1/videos/v/${id}`, {
+            options
+        });
+
+        return response;
+
+    } catch (error) {
+        console.error(error);
+        return error.response
+    }
+};
+
 export const togglePlaylistVisibility = async (playlistId) => {
     try {
         const response = await axios.patch(`/api/v1/playlists/user/${playlistId}`, {
@@ -143,3 +157,29 @@ export const togglePlaylistVisibility = async (playlistId) => {
         return error.response.data
     }
 };
+
+const clearPlaylist = async (playlistId) => {
+    try {
+        const response = await axios.post(`/api/v1/playlists/c/${playlistId}`, options);
+        return response.data;
+    } catch (error) {
+        console.error(error);
+        return error.response.data
+    }
+}
+
+const addRemoveFromWatchLater = async (id) => {
+    try {
+        const response = await axios.patch(`/api/v1/playlists/watch/${id}`, options);
+        return response.data
+    } catch (error) {
+        console.error(error);
+        return error.response.data;
+    }
+}
+
+export {
+    clearPlaylist,
+    addRemoveFromWatchLater,
+    updateLikedVideos
+}

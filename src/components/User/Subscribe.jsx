@@ -10,9 +10,9 @@ const Subscribe = ({ fnc, owner, className }) => {
     const { loggedInUser } = useAuth();
 
     const handleSubscribe = async (id) => {
+        setIsSubscribed(!isSubscribed);
         const response = await subscribeUser(id);
         if (response.data.success) {
-            setIsSubscribed(!isSubscribed);
             fnc && fnc();
         }
     }

@@ -1,6 +1,6 @@
 import { getVideoById, updateVideoViews } from "@/api/video.api";
 import PropTypes from "prop-types";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import Loading from "../Loading";
 import { getVideDate, timeAgo } from "@/utils/convertTime";
 import countFormat from "@/utils/countFormat";
@@ -46,6 +46,11 @@ const VideoById = ({ id, className }) => {
         setIsOpen(!isOpen);
     }
 
+    // Memoize the VideoPlayer component so it only rerenders when `videoUrl` changes
+    const memoizedVideoPlayer = useMemo(() => {
+        return < VideoPlayer videoData={video} />;
+    }, [video?.videoFile]); // Only rerender the video player if the video URL changes
+
     return (
 
         <div className={className}>
@@ -58,7 +63,7 @@ const VideoById = ({ id, className }) => {
                         <div className="flex-auto gap-4 space-y-5">
                             {
                                 video?.videoFile &&
-                                < VideoPlayer videoData={video} />
+                                memoizedVideoPlayer
                             }
                             <h2 className="text-xl font-medium text-wrap text-ellipsis line-clamp-4">{video.title}</h2>
                             <div className="flex flex-wrap items-center justify-between gap-3">

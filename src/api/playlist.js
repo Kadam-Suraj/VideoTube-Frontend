@@ -131,20 +131,6 @@ export const addVideoFromPlaylist = async (videoId, playlistId) => {
     }
 };
 
-const updateLikedVideos = async (id) => {
-    try {
-        const response = await axios.post(`/api/v1/videos/v/${id}`, {
-            options
-        });
-
-        return response;
-
-    } catch (error) {
-        console.error(error);
-        return error.response
-    }
-};
-
 export const togglePlaylistVisibility = async (playlistId) => {
     try {
         const response = await axios.patch(`/api/v1/playlists/user/${playlistId}`, {
@@ -180,6 +166,5 @@ const addRemoveFromWatchLater = async (id) => {
 
 export {
     clearPlaylist,
-    addRemoveFromWatchLater,
-    updateLikedVideos
+    addRemoveFromWatchLater
 }

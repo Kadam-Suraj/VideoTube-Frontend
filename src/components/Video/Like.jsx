@@ -1,14 +1,16 @@
-import { updateLikedVideos } from "@/api/playlist"
 import { likeVideo } from "@/api/video.api"
 import countFormat from "@/utils/countFormat"
 import { ThumbsUp } from "lucide-react"
 import PropTypes from "prop-types"
+import { useState } from "react"
 
 const LikeVideo = ({ id, likes, fnc, isLiked }) => {
+    const [liked, setLiked] = useState(isLiked);
 
     const like = async () => {
+        setLiked(!liked);
+
         const response = await likeVideo(id);
-        await updateLikedVideos(id);
         if (response.data.success) {
             fnc();
         }
@@ -16,7 +18,7 @@ const LikeVideo = ({ id, likes, fnc, isLiked }) => {
 
     return (
         <div onClick={like} className="flex items-center gap-2 px-4 py-2 font-medium rounded-full cursor-pointer select-none bg-accent-foreground/10">
-            <ThumbsUp className={isLiked ? "fill-accent-foreground" : ""} />{likes > 0 && <span >|<span className="ml-2">{countFormat(likes)}</span></span>}
+            <ThumbsUp className={liked ? "fill-accent-foreground" : ""} />{likes > 0 && <span >|<span className="ml-2">{countFormat(likes)}</span></span>}
         </div>
     )
 }

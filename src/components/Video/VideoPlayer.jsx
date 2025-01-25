@@ -86,8 +86,6 @@ const VideoPlayer = ({ videoData }) => {
         };
     }, [videoData]);  // This will run on every videoData change
 
-
-
     return (
         <div>
             <div ref={uiContainerRef} className="!rounded-md shaka-ui-container bg-black">
